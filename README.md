@@ -120,8 +120,11 @@ editorial-skill-for-natural-russian-business-writing/
 |   |-- eval-cases.md
 |   `-- eval-rubric.md
 |-- plans/
-|   `-- development-plan.md
+|   |-- development-plan.md
+|   |-- release-checklist.md
+|   `-- v1.0.0-release-notes.md
 |-- scripts/
+|   |-- build_adapters.py
 |   `-- eval_runner.py
 `-- adapters/
     |-- README.md
