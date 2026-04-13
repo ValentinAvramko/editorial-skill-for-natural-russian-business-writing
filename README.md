@@ -11,10 +11,10 @@ The project combines two things:
 
 ## Why This Exists
 
-Generic “humanizer” prompts often do one of two things badly:
+Generic "humanizer" prompts often do one of two things badly:
 
 - they smooth the text but make it emptier, more generic, or more synthetic
-- they make the text sound more casual or “alive” at the cost of precision, business tone, or factual discipline
+- they make the text sound more casual or "alive" at the cost of precision, business tone, or factual discipline
 
 This project exists to solve a narrower and more practical problem: Russian business writing often needs not softer wording, but disciplined editorial rewriting. That means removing AI phrasing, bureaucracy, recruiter-template language, and synthetic polish while preserving meaning, intent, constraints, and professional tone.
 
@@ -22,7 +22,7 @@ The goal is not to decorate text. The goal is to make it read like it was writte
 
 ## How It Differs From Generic Humanizers
 
-This repository is stricter and more editorial than a typical “make it sound human” prompt.
+This repository is stricter and more editorial than a typical "make it sound human" prompt.
 
 It is designed to:
 
@@ -40,7 +40,7 @@ It also treats humanization as a system rather than a one-off prompt:
 - evaluation cases
 - platform adapter
 
-So the project is less about “making text nicer” and more about creating a reusable editorial standard for natural Russian business writing.
+So the project is less about "making text nicer" and more about creating a reusable editorial standard for natural Russian business writing.
 
 ## What This Is
 
@@ -78,7 +78,7 @@ Use it for:
 
 ## Who This Is Not For
 
-- people looking for a generic “make it warmer” prompt
+- people looking for a generic "make it warmer" prompt
 - creative writing or brand-voice writing where invention matters more than factual discipline
 - casual chat rewriting
 - SEO rewriting
@@ -102,7 +102,7 @@ without turning it into:
 - ad copy
 - recruiter-template language
 - corporate jargon
-- synthetic “AI polish”
+- synthetic "AI polish"
 - overly casual conversation
 
 In practice, this means editing for tone, rhythm, and clarity without inventing facts, diluting meaning, or replacing one template with another.
@@ -119,20 +119,22 @@ In practice, this means editing for tone, rhythm, and clarity without inventing 
 
 ```text
 editorial-skill-for-natural-russian-business-writing/
-├─ README.md
-├─ LICENSE
-├─ core/
-│  ├─ prompt-spec.md
-│  ├─ patterns.md
-│  └─ examples.md
-└─ adapters/
-   └─ codex/
-      ├─ SKILL.md
-      ├─ agents/
-      │  └─ openai.yaml
-      └─ references/
-         ├─ patterns.md
-         └─ examples.md
+|-- README.md
+|-- LICENSE
+|-- core/
+|   |-- prompt-spec.md
+|   |-- prompt-spec.en.md
+|   |-- patterns.md
+|   |-- examples.md
+|   `-- eval-cases.md
+`-- adapters/
+    `-- codex/
+        |-- SKILL.md
+        |-- agents/
+        |   `-- openai.yaml
+        `-- references/
+            |-- patterns.md
+            `-- examples.md
 ```
 
 ## How To Use
@@ -150,7 +152,7 @@ The main specification is in Russian: [`core/prompt-spec.md`](./core/prompt-spec
 
 An English companion version is available here: [`core/prompt-spec.en.md`](./core/prompt-spec.en.md).
 
-Use [`core/patterns.md`](./core/patterns.md) and [`core/examples.md`](./core/examples.md) as supporting reference files.
+Use [`core/patterns.md`](./core/patterns.md), [`core/examples.md`](./core/examples.md), and [`core/eval-cases.md`](./core/eval-cases.md) as supporting reference files.
 
 ### Codex Use
 
@@ -173,11 +175,18 @@ An English version of the prompt spec is included alongside it for portability a
 
 This version is ready to use.
 
-Further improvements are optional and mostly about refinement, not missing fundamentals. The most useful future additions would be:
+The repository already includes:
 
-1. platform-neutral evaluation cases
-2. more technical before/after examples
-3. adapters for other platforms
+1. a platform-neutral core specification
+2. supporting pattern and example references
+3. evaluation cases for prompt and adapter comparison
+4. a working Codex adapter
+
+Further improvements are optional and mostly about refinement, not missing fundamentals. The most useful next additions would be:
+
+1. a lightweight evaluation rubric or scorecard on top of the existing cases
+2. more edge-case technical and managerial before/after examples
+3. adapters for other platforms beyond Codex
 
 ## Positioning
 
