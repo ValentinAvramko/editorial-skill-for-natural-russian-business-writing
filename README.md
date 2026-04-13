@@ -117,6 +117,8 @@ editorial-skill-for-natural-russian-business-writing/
 |   |-- examples.md
 |   |-- eval-cases.md
 |   `-- eval-rubric.md
+|-- plans/
+|   `-- development-plan.md
 `-- adapters/
     |-- README.md
     |-- adapter-contract.md
@@ -154,6 +156,8 @@ editorial-skill-for-natural-russian-business-writing/
 - `core/` остаётся основным источником редакторской логики;
 - платформенные адаптеры подстраивают упаковку под конкретный инструмент, но не меняют сам стандарт.
 
+Нейминг каталогов, файлов и структуры репозитория остаётся на английском. Русским остаётся содержимое документации и инструкций.
+
 Если позже понадобится англоязычная публикационная версия, её лучше делать как отдельный слой экспорта, а не как второй параллельный источник правды внутри основного репозитория.
 
 ## Стратегия адаптеров
@@ -175,31 +179,137 @@ editorial-skill-for-natural-russian-business-writing/
 
 ## Как использовать
 
-### Любая LLM или ручной сценарий
+Ниже описаны два сценария:
 
-Используйте [`core/prompt-spec.md`](./core/prompt-spec.md) как:
+1. готовая установка в Codex через skill;
+2. ручное использование в ChatGPT, Claude или Gemini.
 
-- системный промпт;
-- блок пользовательских инструкций;
-- профиль агента;
-- базовую редакторскую политику в своём рабочем процессе.
+Сейчас полностью готовый платформенный адаптер есть для Codex. Для ChatGPT, Claude и Gemini пока используйте материалы из `core/` вручную.
 
-Поддерживающие материалы:
+### Установка в Codex
 
-- [`core/patterns.md`](./core/patterns.md);
-- [`core/examples.md`](./core/examples.md);
-- [`core/eval-cases.md`](./core/eval-cases.md);
-- [`core/eval-rubric.md`](./core/eval-rubric.md).
+Важно: в этом репозитории skill лежит не в корне, а в каталоге [`adapters/codex`](./adapters/codex/). Поэтому для установки в Codex нужно копировать именно содержимое этого каталога.
 
-### Codex
+Имя skill-а: `humanize-russian-business-text`
 
-Используйте адаптер в [`adapters/codex`](./adapters/codex/). В нём лежат:
+#### Вариант 1. Если репозиторий уже у вас на компьютере
 
-- `adapter.yaml`;
-- `SKILL.md`;
-- `agents/openai.yaml`;
-- `references/patterns.md`;
-- `references/examples.md`.
+Windows PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.codex\skills\humanize-russian-business-text" | Out-Null
+Copy-Item -Recurse -Force ".\adapters\codex\*" "$HOME\.codex\skills\humanize-russian-business-text\"
+```
+
+macOS / Linux:
+
+```bash
+mkdir -p ~/.codex/skills/humanize-russian-business-text
+cp -R ./adapters/codex/* ~/.codex/skills/humanize-russian-business-text/
+```
+
+#### Вариант 2. Если хотите сначала клонировать репозиторий
+
+Windows PowerShell:
+
+```powershell
+git clone https://github.com/ValentinAvramko/editorial-skill-for-natural-russian-business-writing.git
+cd editorial-skill-for-natural-russian-business-writing
+New-Item -ItemType Directory -Force "$HOME\.codex\skills\humanize-russian-business-text" | Out-Null
+Copy-Item -Recurse -Force ".\adapters\codex\*" "$HOME\.codex\skills\humanize-russian-business-text\"
+```
+
+macOS / Linux:
+
+```bash
+git clone https://github.com/ValentinAvramko/editorial-skill-for-natural-russian-business-writing.git
+cd editorial-skill-for-natural-russian-business-writing
+mkdir -p ~/.codex/skills/humanize-russian-business-text
+cp -R ./adapters/codex/* ~/.codex/skills/humanize-russian-business-text/
+```
+
+После копирования перезапустите Codex, если skill не появился сразу.
+
+#### Что должно получиться после установки
+
+В каталоге `~/.codex/skills/humanize-russian-business-text/` должны лежать:
+
+- `SKILL.md`
+- `adapter.yaml`
+- `references/patterns.md`
+- `references/examples.md`
+- `agents/openai.yaml`
+
+### Использование в Codex
+
+После установки вызовите skill по имени и вставьте текст.
+
+Простой вариант:
+
+```text
+Используй $humanize-russian-business-text и перепиши этот текст:
+
+[ваш текст]
+```
+
+Более точный вариант:
+
+```text
+Используй $humanize-russian-business-text.
+Это сопроводительное письмо.
+Нужно убрать нейрояз и карьерные штампы, но сохранить спокойный профессиональный тон.
+Если текст уже нормальный, правь минимально.
+Верни только итоговый вариант.
+
+[ваш текст]
+```
+
+Если нужен комментарий к правкам, можно написать так:
+
+```text
+Используй $humanize-russian-business-text и перепиши текст.
+Сначала дай итоговый вариант, потом коротко перечисли, что именно было исправлено.
+
+[ваш текст]
+```
+
+### Ручное использование в ChatGPT, Claude или Gemini
+
+Если отдельный адаптер для платформы ещё не готов, используйте базовую спецификацию вручную.
+
+1. Откройте [`core/prompt-spec.md`](./core/prompt-spec.md).
+2. Скопируйте его в системные инструкции, custom instructions или в начало диалога.
+3. Вставьте исходный текст.
+4. Дайте короткую задачу: что это за жанр, насколько глубоко можно править и нужен ли комментарий к правкам.
+
+Базовый запрос:
+
+```text
+Перепиши этот текст так, чтобы он звучал естественно и по-деловому.
+Не придумывай новые факты и не делай его более рекламным.
+Нужен только итоговый вариант.
+
+Текст:
+...
+```
+
+Если нужна более точная настройка, подключайте дополнительно:
+
+- [`core/patterns.md`](./core/patterns.md), когда текст явно отдаёт нейросетевыми штампами, канцеляритом, карьерным шаблоном или корпоративным жаргоном;
+- [`core/examples.md`](./core/examples.md), когда важно попасть в правильную глубину правки;
+- [`core/eval-cases.md`](./core/eval-cases.md) и [`core/eval-rubric.md`](./core/eval-rubric.md), когда вы сравниваете версии промпта, модели или адаптера.
+
+### Как понять, что результат хороший
+
+Минимальная проверка перед использованием результата:
+
+1. Смысл не изменился.
+2. Новые факты, мотивация и достижения не появились.
+3. Текст стал естественнее, а не просто глаже.
+4. Канцелярит, карьерные штампы и нейросетевые связки действительно ушли.
+5. Текст не стал суше, беднее или безличнее исходника.
+
+Если вы тестируете инструмент системно, используйте [`core/eval-cases.md`](./core/eval-cases.md) и [`core/eval-rubric.md`](./core/eval-rubric.md).
 
 ## Текущее состояние
 
@@ -213,11 +323,7 @@ editorial-skill-for-natural-russian-business-writing/
 4. рабочий адаптер для Codex;
 5. заготовки адаптеров для Claude Code, ChatGPT и Gemini.
 
-Следующие полезные шаги:
-
-1. добавить лёгкий автоматизированный шаблон оценки или сценарий сравнения поверх текущих кейсов;
-2. расширить набор граничных примеров для технических и управленческих текстов;
-3. довести до рабочего состояния адаптеры для Claude Code, ChatGPT и Gemini.
+Планы развития вынесены в [`plans/development-plan.md`](./plans/development-plan.md).
 
 ## Позиционирование
 
