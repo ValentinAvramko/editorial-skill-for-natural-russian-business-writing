@@ -80,6 +80,10 @@ def load_cases(path: Path = CASES_PATH) -> list[EvalCase]:
             current_title = case_match.group(2).strip()
             continue
 
+        if line.startswith("## "):
+            current_section = None
+            continue
+
         if current_id is None:
             continue
 
