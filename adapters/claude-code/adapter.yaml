@@ -1,6 +1,6 @@
 adapter_id: claude-code
 platform: Claude Code
-status: planned
+status: active
 
 source_of_truth:
   prompt_spec: ../../core/prompt-spec.md
@@ -11,9 +11,15 @@ source_of_truth:
 
 deliverables:
   primary_instruction:
-    path: TBD
-    role: основной вход платформы
-  references: []
+    path: SKILL.md
+    role: основной skill-файл Claude Code для personal или project skills
+  references:
+    - path: references/patterns.md
+      source: ../../core/patterns.md
+      role: локальный справочник для распознавания AI-штампов, канцелярита и переисправления
+    - path: references/examples.md
+      source: ../../core/examples.md
+      role: локальный набор примеров для калибровки глубины и тона правки
   platform_config: []
 
 allowed_adapter_changes:
@@ -26,10 +32,12 @@ forbidden_adapter_changes:
   - change editorial policy
   - soften hard constraints
   - invent new allowed behavior
+  - replace shared evaluation with adapter-only evaluation
 
 validation_policy:
   evaluation_source: ../../core
-  release_gate: проверить адаптер на общем наборе кейсов перед переводом в active
+  release_gate: держать адаптер синхронизированным с core и перепроверять на общем наборе кейсов при значимых изменениях
 
 notes:
-  - Замените TBD, когда будет определён итоговый формат упаковки для Claude Code.
+  - Для переносимого адаптера предпочтителен формат Claude Code Skills: ~/.claude/skills/<name>/SKILL.md или .claude/skills/<name>/SKILL.md.
+  - CLAUDE.md остаётся полезным для общих project-wide инструкций, но этот адаптер упакован как skill.

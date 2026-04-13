@@ -40,8 +40,8 @@
 - платформенно-нейтральное ядро в `core/`;
 - справочные материалы по паттернам и примерам;
 - кейсы и рубрика для сравнения версий;
-- рабочий адаптер для Codex;
-- заготовки адаптеров для Claude Code, ChatGPT и Gemini.
+- рабочие адаптеры для Codex и Claude Code;
+- заготовки адаптеров для ChatGPT и Gemini.
 
 ## Для каких задач подходит
 
@@ -135,8 +135,12 @@ editorial-skill-for-natural-russian-business-writing/
     |       |-- patterns.md
     |       `-- examples.md
     |-- claude-code/
+    |   |-- adapter.yaml
+    |   |-- SKILL.md
     |   |-- README.md
-    |   `-- adapter.yaml
+    |   `-- references/
+    |       |-- patterns.md
+    |       `-- examples.md
     |-- chatgpt/
     |   |-- README.md
     |   `-- adapter.yaml
@@ -179,12 +183,13 @@ editorial-skill-for-natural-russian-business-writing/
 
 ## Как использовать
 
-Ниже описаны два сценария:
+Ниже описаны три сценария:
 
 1. готовая установка в Codex через skill;
-2. ручное использование в ChatGPT, Claude или Gemini.
+2. готовая установка в Claude Code через skill;
+3. ручное использование в ChatGPT или Gemini.
 
-Сейчас полностью готовый платформенный адаптер есть для Codex. Для ChatGPT, Claude и Gemini пока используйте материалы из `core/` вручную.
+Сейчас полностью готовые платформенные адаптеры есть для Codex и Claude Code. Для ChatGPT и Gemini пока используйте материалы из `core/` вручную.
 
 ### Установка в Codex
 
@@ -273,7 +278,40 @@ cp -R ./adapters/codex/* ~/.codex/skills/humanize-russian-business-text/
 [ваш текст]
 ```
 
-### Ручное использование в ChatGPT, Claude или Gemini
+### Установка в Claude Code
+
+Для Claude Code в репозитории есть отдельный рабочий адаптер в [`adapters/claude-code`](./adapters/claude-code/).
+
+Рекомендуемый вариант установки:
+
+1. скопировать содержимое [`adapters/claude-code/`](./adapters/claude-code/) в `~/.claude/skills/humanize-russian-business-text/`;
+2. убедиться, что внутри лежит `SKILL.md`;
+3. перезапустить Claude Code, если skill не появился сразу.
+
+После этого Claude Code сможет использовать адаптер как обычный skill: автоматически по описанию или вручную через `/humanize-russian-business-text`.
+
+Минимальная структура после установки:
+
+- `~/.claude/skills/humanize-russian-business-text/SKILL.md`;
+- `~/.claude/skills/humanize-russian-business-text/references/patterns.md`;
+- `~/.claude/skills/humanize-russian-business-text/references/examples.md`.
+
+Пример запроса:
+
+```text
+/humanize-russian-business-text
+
+Это сопроводительное письмо.
+Нужно убрать нейрояз и карьерные штампы, но сохранить спокойный профессиональный тон.
+Если текст уже нормальный, правь минимально.
+Верни только итоговый вариант.
+
+[ваш текст]
+```
+
+Подробные инструкции по установке лежат в [`adapters/claude-code/README.md`](./adapters/claude-code/README.md).
+
+### Ручное использование в ChatGPT или Gemini
 
 Если отдельный адаптер для платформы ещё не готов, используйте базовую спецификацию вручную.
 
@@ -320,8 +358,8 @@ cp -R ./adapters/codex/* ~/.codex/skills/humanize-russian-business-text/
 1. платформенно-нейтральное ядро;
 2. справочники паттернов и примеров;
 3. кейсы и рубрика для сравнения версий;
-4. рабочий адаптер для Codex;
-5. заготовки адаптеров для Claude Code, ChatGPT и Gemini.
+4. рабочие адаптеры для Codex и Claude Code;
+5. заготовки адаптеров для ChatGPT и Gemini.
 
 Планы развития вынесены в [`plans/development-plan.md`](./plans/development-plan.md).
 
