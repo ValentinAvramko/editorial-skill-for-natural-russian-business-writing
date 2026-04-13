@@ -1,0 +1,35 @@
+adapter_id: claude-code
+platform: Claude Code
+status: planned
+
+source_of_truth:
+  prompt_spec: ../../core/prompt-spec.md
+  patterns: ../../core/patterns.md
+  examples: ../../core/examples.md
+  evaluation_cases: ../../core/eval-cases.md
+  evaluation_rubric: ../../core/eval-rubric.md
+
+deliverables:
+  primary_instruction:
+    path: TBD
+    role: основной вход платформы
+  references: []
+  platform_config: []
+
+allowed_adapter_changes:
+  - packaging
+  - metadata
+  - invocation wording
+  - local reference loading rules
+
+forbidden_adapter_changes:
+  - change editorial policy
+  - soften hard constraints
+  - invent new allowed behavior
+
+validation_policy:
+  evaluation_source: ../../core
+  release_gate: проверить адаптер на общем наборе кейсов перед переводом в active
+
+notes:
+  - Замените TBD, когда будет определён итоговый формат упаковки для Claude Code.

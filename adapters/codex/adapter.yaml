@@ -1,0 +1,44 @@
+adapter_id: codex
+platform: Codex
+status: active
+
+source_of_truth:
+  prompt_spec: ../../core/prompt-spec.md
+  patterns: ../../core/patterns.md
+  examples: ../../core/examples.md
+  evaluation_cases: ../../core/eval-cases.md
+  evaluation_rubric: ../../core/eval-rubric.md
+
+deliverables:
+  primary_instruction:
+    path: SKILL.md
+    role: основной вход в skill
+  references:
+    - path: references/patterns.md
+      source: ../../core/patterns.md
+      role: локальный справочник для распознавания паттернов
+    - path: references/examples.md
+      source: ../../core/examples.md
+      role: локальный набор примеров для калибровки тона и глубины правки
+  platform_config:
+    - path: agents/openai.yaml
+      role: metadata интерфейса Codex/OpenAI
+
+allowed_adapter_changes:
+  - skill metadata
+  - platform-specific workflow wording
+  - local reference loading instructions
+  - condensed or reorganized local references
+
+forbidden_adapter_changes:
+  - change editorial policy
+  - soften hard constraints
+  - redefine expected tone
+  - replace shared evaluation with adapter-only evaluation
+
+validation_policy:
+  evaluation_source: ../../core
+  release_gate: проверять поведение на общем наборе кейсов при значимых изменениях адаптера
+
+notes:
+  - Локальные reference-файлы могут отличаться по формулировкам и структуре от core, но обязаны сохранять тот же редакторский стандарт.

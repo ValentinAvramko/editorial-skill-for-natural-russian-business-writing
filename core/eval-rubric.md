@@ -1,96 +1,96 @@
-# Evaluation Rubric
+# Рубрика оценки
 
-Use this rubric together with [`core/eval-cases.md`](./eval-cases.md) when comparing prompt revisions, model variants, or platform adapters.
+Используйте эту рубрику вместе с [`core/eval-cases.md`](./eval-cases.md), когда сравниваете версии промпта, варианты адаптеров или поведенческие изменения.
 
-The goal is to keep evaluation lightweight and repeatable without turning it into a heavy benchmarking framework.
+Цель рубрики в том, чтобы оценка оставалась лёгкой, повторяемой и полезной, а не превращалась в тяжёлый benchmarking framework.
 
-## Rating Scale
+## Шкала
 
-Score each criterion for each case as:
+Оценивайте каждый критерий в каждом кейсе так:
 
-- `2` = pass
-- `1` = soft fail
-- `0` = hard fail
+- `2` = зачёт;
+- `1` = мягкий провал;
+- `0` = жёсткий провал.
 
-Use the scores conservatively:
+Используйте оценки консервативно:
 
-- `2` means the behavior is clearly acceptable for the case
-- `1` means the result is usable but needs revision or tighter prompt control
-- `0` means the result breaks an important requirement of the skill
+- `2` означает, что поведение явно приемлемо для данного кейса;
+- `1` означает, что результат в целом пригоден, но требует доработки или более жёсткого prompt-control;
+- `0` означает, что результат нарушает важное требование инструмента.
 
-## Core Criteria
+## Основные критерии
 
-Score these six criteria for every case:
+Для каждого кейса оценивайте шесть критериев:
 
-1. Meaning preservation
-2. No invented facts, motivation, or detail
-3. Natural Russian business tone
-4. Removal of AI phrasing, bureaucracy, and template language where relevant
-5. No over-editing
-6. No drift into casual, promotional, or synthetic tone
+1. Сохранение смысла.
+2. Отсутствие выдуманных фактов, мотивации и новых деталей.
+3. Естественный русскоязычный деловой тон.
+4. Удаление AI-штампов, канцелярита и шаблонного языка там, где это нужно.
+5. Отсутствие переисправления.
+6. Отсутствие ухода в разговорность, рекламу или синтетический тон.
 
-Maximum score per case: `12`
+Максимум за один кейс: `12`.
 
-## How To Interpret Results
+## Как интерпретировать результаты
 
-### Case-Level Decision
+### Решение по кейсу
 
-- `Ready`: total score `11-12`, with no `0`
-- `Needs revision`: total score `8-10`, with no `0` in criteria 1-2
-- `Fail`: any `0` in criteria 1-2, or total score `0-7`
+- `Готово`: итог `11-12` и ни одного `0`;
+- `Нужна доработка`: итог `8-10`, при этом по критериям 1-2 нет `0`;
+- `Провал`: любой `0` по критериям 1-2 или итог `0-7`.
 
-Treat criteria `1` and `2` as non-negotiable. A result that changes meaning or invents facts should fail even if the wording sounds good.
+Критерии `1` и `2` считайте безусловными. Если правка меняет смысл или придумывает факты, результат должен считаться провалом, даже если текст звучит гладко.
 
-### Run-Level Decision
+### Решение по прогону
 
-When reviewing a full set of cases:
+Если вы смотрите на весь набор кейсов целиком:
 
-- `Strong`: no failed cases and most cases are `Ready`
-- `Borderline`: no critical failures, but several cases are `Needs revision`
-- `Not ready`: one or more failed cases, especially on meaning preservation or invented detail
+- `Сильно`: провальных кейсов нет и большинство кейсов в статусе `Готово`;
+- `Погранично`: критических провалов нет, но заметная часть кейсов требует доработки;
+- `Не готово`: есть хотя бы один провальный кейс, особенно по сохранению смысла или выдуманным деталям.
 
-## Soft Fail vs Hard Fail
+## Мягкий и жёсткий провал
 
-Use `1` when the issue is noticeable but limited:
+Ставьте `1`, если проблема заметна, но ограничена:
 
-- slightly too smooth
-- a bit drier than the source
-- some template language remains
-- a useful sentence was made weaker but not factually wrong
+- текст немного слишком гладкий;
+- текст стал чуть суше исходника;
+- часть шаблонного языка осталась;
+- полезная фраза стала слабее, но не фактически неверной.
 
-Use `0` when the issue breaks the contract of the skill:
+Ставьте `0`, если нарушен базовый контракт инструмента:
 
-- meaning changed
-- new motivation or achievements appeared
-- technical requirement became less precise
-- tone turned promotional, recruiter-template-like, or obviously synthetic
-- a previously natural text was over-edited into something weaker
+- изменился смысл;
+- появилась новая мотивация или достижение;
+- техническое требование стало менее точным;
+- тон ушёл в рекламу, карьерный шаблон или очевидную синтетику;
+- ранее естественный текст был переисправлен в более слабую версию.
 
-## Quick Evaluation Template
+## Короткий шаблон оценки
 
-Use this compact template when logging results:
+Используйте такой шаблон, если хотите фиксировать результаты:
 
 ```text
-Case:
-Total:
-Decision: Ready / Needs revision / Fail
+Кейс:
+Итог:
+Решение: Готово / Нужна доработка / Провал
 
-Scores:
-1. Meaning preservation:
-2. No invented facts or detail:
-3. Natural business tone:
-4. Pattern removal:
-5. No over-editing:
-6. No tone drift:
+Оценки:
+1. Сохранение смысла:
+2. Нет выдуманных фактов и деталей:
+3. Естественный деловой тон:
+4. Удаление паттернов:
+5. Нет переисправления:
+6. Нет ухода тона:
 
-Notes:
+Заметки:
 ```
 
-## Suggested Use
+## Рекомендуемое использование
 
-- Use `core/eval-cases.md` for the scenario set
-- Use this rubric for scoring consistency
-- Add short notes only where a score is not obviously a `2`
-- Prefer comparing variants on the same cases instead of adding many weak cases
+- используйте `core/eval-cases.md` как набор сценариев;
+- используйте эту рубрику для единообразной оценки;
+- добавляйте короткие заметки только там, где оценка неочевидна;
+- лучше сравнивать варианты на одних и тех же кейсах, чем плодить много слабых кейсов.
 
-This rubric is intentionally lightweight. It is meant to improve comparison discipline, not to replace editorial judgment.
+Эта рубрика намеренно остаётся лёгкой. Она должна дисциплинировать сравнение, а не заменять редакторское суждение.

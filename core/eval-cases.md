@@ -1,197 +1,197 @@
-# Evaluation Cases
+# Кейсы для оценки
 
-This file provides a compact evaluation set for checking whether the editorial skill behaves consistently across common Russian-language business writing tasks.
+Этот файл содержит компактный набор кейсов для проверки того, насколько редакторский инструмент ведёт себя последовательно на типовых задачах русскоязычного делового письма.
 
-Use these cases to compare prompt revisions, model variants, or platform adapters.
+Используйте эти кейсы, чтобы сравнивать версии промпта, варианты адаптеров и поведенческие изменения.
 
-For lightweight scoring and pass/fail interpretation, use [`core/eval-rubric.md`](./eval-rubric.md) together with this file.
+Для лёгкой оценки и интерпретации результата используйте этот файл вместе с [`core/eval-rubric.md`](./eval-rubric.md).
 
-## Evaluation Criteria
+## Критерии оценки
 
-For each case, check:
+Для каждого кейса проверьте:
 
-1. Meaning preservation
-2. No invented facts, motivation, or detail
-3. Natural Russian business tone
-4. Removal of AI phrasing, bureaucracy, and template language where relevant
-5. No over-editing
-6. No drift into casual, promotional, or synthetic tone
+1. Сохранение смысла.
+2. Отсутствие выдуманных фактов, мотивации и новых деталей.
+3. Естественный русскоязычный деловой тон.
+4. Удаление AI-штампов, канцелярита и шаблонного языка там, где это нужно.
+5. Отсутствие переисправления.
+6. Отсутствие ухода в разговорность, рекламу или синтетическую гладкость.
 
-## Case 1: Cover Letter Template Language
+## Кейс 1. Карьерно-шаблонное сопроводительное письмо
 
-### Input
+### Вход
 
 Меня заинтересовала ваша вакансия, поскольку я обладаю высоким уровнем мотивации и уверен, что мой опыт будет полезен вашей команде. В течение своей карьеры я успешно решал сложные задачи и ориентирован на результат.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- remove template career-service language
-- keep the message concise
-- do not invent concrete achievements
-- make the text sound human and professional
+- убрать язык карьерных сервисов и шаблонную самопрезентацию;
+- сохранить краткость;
+- не придумывать конкретные достижения;
+- сделать текст человеческим и профессиональным.
 
-## Case 2: Already Good Text, Minimal Edit
+## Кейс 2. Уже хороший текст, нужна минимальная правка
 
-### Input
+### Вход
 
 Добрый день. Посмотрел описание роли и думаю, что мой опыт может быть здесь полезен: я много работал на стыке продукта, аналитики и операционных процессов. Если будет уместно, буду рад коротко созвониться и рассказать подробнее.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- edit minimally
-- keep the structure mostly intact
-- avoid making the text drier or more formal than needed
+- редактировать минимально;
+- в целом сохранить структуру;
+- не делать текст суше или формальнее, чем нужно.
 
-## Case 3: No Added Motivation
+## Кейс 3. Нельзя добавлять мотивацию
 
-### Input
+### Вход
 
 Я работал с похожими задачами в продуктовой команде и понимаю, как выстроить взаимодействие между разработкой, аналитикой и бизнесом.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- keep the statement as-is or close to it
-- do not add “this role is interesting to me” or similar motivation
-- do not decorate the text
+- оставить формулировку как есть или очень близко к ней;
+- не добавлять «мне интересна эта роль» и похожую мотивацию;
+- не украшать текст.
 
-## Case 4: AI-Smooth Corporate Tone
+## Кейс 4. Слишком гладкий корпоративный тон
 
-### Input
+### Вход
 
 Мой опыт позволяет эффективно адаптироваться к новым задачам, быстро погружаться в контекст и обеспечивать устойчивое качество результата в условиях высокой неопределенности.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- reduce synthetic smoothness
-- keep the meaning
-- avoid replacing this with empty self-praise
+- уменьшить синтетическую гладкость;
+- сохранить смысл;
+- не подменять это пустой саморекламой.
 
-## Case 5: Vacancy-Mirroring
+## Кейс 5. Зеркалирование языка вакансии
 
-### Input
+### Вход
 
 Мне особенно близка возможность лидировать кросс-функциональные инициативы, драйвить трансформацию и усиливать value через системное взаимодействие со стейкхолдерами.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- remove corporate jargon
-- rephrase in normal Russian
-- preserve relevance without mirroring vacancy language
+- убрать корпоративный жаргон;
+- переформулировать нормальным русским;
+- сохранить релевантность без копирования языка вакансии.
 
-## Case 6: Short Work Message
+## Кейс 6. Короткое рабочее сообщение
 
-### Input
+### Вход
 
 Коллеги, важно отметить, что в свою очередь нам необходимо проактивно синхронизироваться по следующему этапу работ.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- make the text shorter and clearer
-- keep it respectful
-- avoid bureaucratic or synthetic phrasing
+- сделать текст короче и понятнее;
+- сохранить уважительный тон;
+- убрать канцелярит и синтетические формулировки.
 
-## Case 7: Project Description
+## Кейс 7. Описание проекта
 
-### Input
+### Вход
 
 В рамках проекта была обеспечена реализация единого процесса взаимодействия между продуктовыми и операционными командами, что позволило повысить прозрачность работы и эффективность принятия решений.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- make the action and result explicit
-- reduce bureaucracy
-- keep the project description concrete
+- сделать действие и результат явными;
+- уменьшить канцелярит;
+- сохранить конкретность проектного описания.
 
-## Case 8: Case Description
+## Кейс 8. Описание кейса
 
-### Input
+### Вход
 
 Кейс продемонстрировал важность системного подхода и позволил сформировать основу для дальнейшего масштабирования практик взаимодействия между участниками процесса.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- remove false importance
-- replace empty abstraction with concrete meaning
-- avoid over-inflating the case
+- убрать ложную значительность;
+- заменить пустую абстракцию конкретным смыслом;
+- не раздувать значение кейса.
 
-## Case 9: Technical Requirement
+## Кейс 9. Техническое требование
 
-### Input
+### Вход
 
 Система должна обеспечивать возможность гибкой настройки уведомлений и поддерживать удобный механизм управления правами доступа с учетом специфики ролей пользователей.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- preserve requirement precision
-- rewrite abstract phrasing into clearer functional language
-- do not weaken the requirement
+- сохранить точность требования;
+- заменить абстрактные формулировки более ясным функциональным языком;
+- не ослабить требование.
 
-## Case 10: Test Assignment
+## Кейс 10. Тестовое задание
 
-### Input
+### Вход
 
 Необходимо реализовать решение, которое позволит продемонстрировать способность кандидата эффективно работать с данными, формировать выводы и визуализировать результаты в понятном формате.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- simplify the wording
-- preserve evaluation intent
-- do not make the task vaguer
+- упростить формулировку;
+- сохранить смысл оценки;
+- не сделать задание более расплывчатым.
 
-## Case 11: Acceptance Criteria
+## Кейс 11. Критерий приёмки
 
-### Input
+### Вход
 
 При изменении статуса заявки система должна обеспечивать автоматическую отправку уведомления пользователю и фиксировать факт отправки в журнале событий.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- keep acceptance logic exact
-- do not replace exact conditions with softer wording
-- preserve sequence and system behavior
+- точно сохранить логику критерия приёмки;
+- не заменять точные условия более мягкими формулировками;
+- сохранить последовательность и поведение системы.
 
-## Case 12: Architecture Constraint
+## Кейс 12. Архитектурное ограничение
 
-### Input
+### Вход
 
 Решение не должно требовать синхронного обмена между сервисами в критическом пути обработки запроса и должно сохранять работоспособность при временной недоступности очереди.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- keep the architectural constraint precise
-- avoid diluting the operational requirement
-- preserve the negative constraint and resilience condition
+- сохранить точность архитектурного ограничения;
+- не размыть эксплуатационное требование;
+- сохранить отрицательное ограничение и условие устойчивости.
 
-## Case 13: Trade-Off Description
+## Кейс 13. Описание компромисса
 
-### Input
+### Вход
 
 Мы отказались от более гибкой схемы конфигурации, потому что на этом этапе важнее было сократить количество точек отказа и упростить сопровождение решения.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- keep the trade-off explicit
-- do not make the choice sound more grand or strategic than it is
-- preserve the practical reasoning
+- сохранить явный компромисс;
+- не делать выбор более «стратегическим» или величественным, чем он есть;
+- сохранить практическую логику решения.
 
-## Case 14: Over-Editing Trap
+## Кейс 14. Ловушка переисправления
 
-### Input
+### Вход
 
 Добрый день. Я посмотрел описание роли и думаю, что мой опыт здесь может быть полезен: я много работал на стыке продукта, аналитики и операционных процессов. Если будет удобно, могу коротко рассказать о релевантных задачах.
 
-### Expected Behavior
+### Ожидаемое поведение
 
-- avoid rewriting this into generic recruiter-template language
-- keep the living tone
-- make at most a light correction
+- не переписывать это в язык карьерных шаблонов;
+- сохранить живой тон;
+- ограничиться лёгкой правкой или оставить почти без изменений.
 
-## Failure Signals
+## Сигналы провала
 
-The edit likely failed if:
+Правка, скорее всего, не удалась, если:
 
-- new achievements, motivation, or detail appeared
-- the text became more polished but less human
-- the text became drier and weaker than the source
-- requirements or conditions became less precise
-- the result sounds like a recruiter template or a generic AI answer
+- появились новые достижения, мотивация или детали;
+- текст стал более гладким, но менее человеческим;
+- текст стал суше и слабее исходника;
+- требования или условия стали менее точными;
+- результат звучит как шаблон рекрутера или общий AI-ответ.

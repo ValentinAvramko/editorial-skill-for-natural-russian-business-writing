@@ -1,117 +1,182 @@
-# Adapters Guide
+# Руководство по адаптерам
 
-This file defines the source of truth and synchronization rules between the platform-neutral core and platform-specific adapters.
+Этот файл определяет источник правды и правила синхронизации между платформенно-нейтральным `core/` и платформенными адаптерами.
 
-Use it when updating `core/`, adding a new adapter, or deciding whether a change belongs in the core specification or in an adapter layer.
+Используйте его, когда обновляете `core/`, добавляете новый адаптер или решаете, относится ли изменение к редакторской логике или только к платформенной упаковке.
 
-## Source Of Truth
+Связанные файлы:
 
-The source of truth for editorial behavior is `core/`.
+- [`adapters/adapter-contract.md`](./adapter-contract.md)
+- [`adapters/sync-matrix.md`](./sync-matrix.md)
+- [`adapters/_template/`](./_template/)
 
-That includes:
+## Источник правды
+
+Единственный источник правды для редакторского поведения находится в `core/`.
+
+Сюда входят:
 
 - `core/prompt-spec.md`
-- `core/prompt-spec.en.md`
 - `core/patterns.md`
 - `core/examples.md`
 - `core/eval-cases.md`
 - `core/eval-rubric.md`
 
-If an adapter conflicts with the core on editorial logic, constraints, or target style, the core wins.
+Если адаптер расходится с `core/` в редакторской логике, ограничениях или целевом тоне, приоритет всегда у `core/`.
 
-## What Adapters Are Allowed To Change
+## Что адаптеры могут менять
 
-Adapters may translate the core into platform-native packaging.
+Адаптеры могут переводить `core/` в нативную упаковку под конкретную платформу.
 
-That can include:
+Это может включать:
 
-- skill metadata and front matter
-- agent manifests and platform config files
-- file layout required by the platform
-- instructions about when to open local reference files
-- small wording changes that improve compatibility with a specific tool
-- condensed or reorganized reference material when the platform benefits from shorter local files
+- метаданные skill-а и front matter;
+- манифесты агентов и конфигурационные файлы платформы;
+- файловую структуру, нужную конкретному инструменту;
+- платформенные формулировки для вызова или загрузки инструкций;
+- указания о том, когда открывать локальные справочные файлы;
+- сокращённые или перегруппированные справочные материалы, если платформе так удобнее работать.
 
-These are delivery-layer changes, not editorial-policy changes.
+Это изменения уровня доставки, а не изменения редакторской политики.
 
-## What Adapters Must Preserve
+По умолчанию адаптер должен оставаться тонким:
 
-Every adapter must preserve the core contract:
+- один основной файл инструкций;
+- локальные справочные файлы только там, где они реально полезны платформе;
+- оценка и проверка качества остаются общими в `core/`, если нет явной причины делать иначе.
 
-- meaning preservation over stylistic invention
-- no invented facts, motivation, achievements, timelines, or emotional color
-- natural Russian business tone
-- resistance to bureaucracy, recruiter-template language, corporate jargon, and synthetic polish
-- minimal editing when the source is already good
-- protection of technical precision in requirements, cases, and test tasks
-- avoidance of replacing one template with another
+## Что адаптеры обязаны сохранять
 
-An adapter must not silently soften hard constraints just because a platform prefers shorter instructions.
+Каждый адаптер обязан сохранять базовый контракт `core/`:
 
-## Reference File Policy
+- сохранение смысла важнее стилистического украшательства;
+- нельзя выдумывать факты, мотивацию, достижения, сроки или эмоциональные акценты;
+- целевой тон должен оставаться естественным русским деловым тоном;
+- нужно сопротивляться канцеляриту, карьерным шаблонам, корпоративному жаргону и синтетической гладкости;
+- если исходник уже хорош, правка должна быть минимальной;
+- техническая точность в требованиях, кейсах и тестовых заданиях должна сохраняться;
+- удаление одного шаблона не должно приводить к замене его другим.
 
-Adapter reference files may be:
+Адаптер не должен молча смягчать жёсткие ограничения только потому, что конкретной платформе нравится более короткая инструкция.
 
-- direct copies of the corresponding core files
-- shortened working copies derived from the core
-- platform-specific rearrangements of the same material
+## Политика справочных файлов
 
-But they must not introduce a different editorial standard.
+Справочные файлы адаптера могут быть:
 
-For the current Codex adapter:
+- прямыми копиями файлов из `core/`;
+- сокращёнными рабочими версиями, сделанными на основе `core/`;
+- платформенно-перегруппированными версиями того же материала.
 
-- `adapters/codex/references/patterns.md` should stay aligned with the detection logic of `core/patterns.md`
-- `adapters/codex/references/examples.md` should stay aligned with the intervention style of `core/examples.md`
-- `adapters/codex/SKILL.md` may add platform workflow instructions, but should not override core editorial rules
+Но они не должны вводить другой редакторский стандарт.
 
-## Update Rule
+Файлы оценки работают иначе:
 
-When the editorial policy changes, update the core first.
+- `core/eval-cases.md` по умолчанию остаётся общим;
+- `core/eval-rubric.md` по умолчанию остаётся общей рубрикой.
 
-Then review every adapter and decide whether it needs:
+Не копируйте файлы оценки в каждый адаптер без конкретной рабочей причины.
 
-1. no change
-2. a wording sync
-3. a reference-file refresh
-4. a platform-config update
+Для текущего адаптера Codex:
 
-Do not start by patching an adapter in isolation if the change is actually editorial.
+- `adapters/codex/references/patterns.md` должен оставаться синхронизирован с логикой `core/patterns.md`;
+- `adapters/codex/references/examples.md` должен оставаться синхронизирован со стилем правки из `core/examples.md`;
+- `adapters/codex/SKILL.md` может добавлять платформенный рабочий процесс, но не должен переопределять редакторские правила `core/`.
 
-## Practical Sync Checklist
+## Правило обновления
 
-Use this checklist after meaningful core changes:
+Если меняется редакторская политика, сначала обновляйте `core/`.
 
-1. Confirm whether the change affects editorial behavior, examples, pattern detection, or evaluation.
-2. Update the relevant file in `core/` first.
-3. Review `adapters/codex/SKILL.md` for wording that now drifts from the core.
-4. Review `adapters/codex/references/` for outdated examples or pattern lists.
-5. Check whether the adapter still points to the right local reference files.
-6. Re-run spot checks against `core/eval-cases.md` and `core/eval-rubric.md` if the change is behaviorally meaningful.
+После этого проверьте каждый адаптер и решите, требуется ли ему:
 
-## When A Change Belongs In Core
+1. ничего не менять;
+2. синхронизировать формулировки;
+3. обновить локальные справочные файлы;
+4. обновить конфигурацию платформы.
 
-Put the change in `core/` if it affects:
+Не начинайте с точечной правки адаптера, если изменение по сути редакторское.
 
-- target tone
-- hard constraints
-- allowed vs forbidden rewriting behavior
-- genre guidance
-- evaluation expectations
-- pattern taxonomy
-- example philosophy
+## Практический чеклист синхронизации
 
-## When A Change Belongs In An Adapter
+Используйте этот список после содержательных изменений в `core/`:
 
-Put the change in an adapter if it affects:
+1. Понять, затрагивает ли изменение редакторское поведение, примеры, распознавание паттернов или оценку.
+2. Если изменение редакторское, сначала обновить `core/`.
+3. Проверить `adapter.yaml` у всех адаптеров и посмотреть, какие файлы зависят от изменённого источника.
+4. Обновить только те файлы адаптера, которые действительно зависят от этого фрагмента `core/`.
+5. Проверить, что адаптеры всё ещё ссылаются на правильные локальные справочные файлы.
+6. При значимом изменении поведения перепроверить адаптер на `core/eval-cases.md` и `core/eval-rubric.md`.
 
-- packaging for a specific tool
-- platform-specific metadata
-- invocation wording for a given agent environment
-- reference loading instructions
-- format constraints imposed by the platform
+## Целевая структура
 
-## Current Repository Rule
+Используйте такую форму как базовую для роста в несколько платформ:
 
-In this repository, `core/` defines the editorial standard and `adapters/` packages that standard for execution environments.
+```text
+adapters/
+|-- README.md
+|-- adapter-contract.md
+|-- sync-matrix.md
+|-- _template/
+|   |-- README.md
+|   `-- adapter.yaml
+|-- codex/
+|   |-- adapter.yaml
+|   |-- SKILL.md
+|   |-- agents/
+|   |   `-- openai.yaml
+|   `-- references/
+|       |-- patterns.md
+|       `-- examples.md
+|-- claude-code/
+|   |-- README.md
+|   `-- adapter.yaml
+|-- chatgpt/
+|   |-- README.md
+|   `-- adapter.yaml
+`-- gemini/
+    |-- README.md
+    `-- adapter.yaml
+```
 
-Treat adapters as faithful implementations of the core, not as independent prompt branches.
+Такая структура держит общую редакторскую логику в одном месте и делает платформенную упаковку видимой, не заставляя каждый адаптер зеркалить весь репозиторий.
+
+## Правило `adapter.yaml`
+
+В каждом каталоге адаптера должен лежать манифест `adapter.yaml`.
+
+Он отвечает на простые вопросы:
+
+- для какой платформы этот адаптер;
+- в каком он статусе: `planned`, `active` или `deprecated`;
+- от каких файлов в `core/` он зависит;
+- какие локальные файлы критичны для работы;
+- что должно быть проверено перед переводом адаптера в рабочее состояние.
+
+Это делает рост числа адаптеров управляемым, когда Codex перестаёт быть единственной реализацией.
+
+## Когда изменение относится к `core/`
+
+Кладите изменение в `core/`, если оно влияет на:
+
+- целевой тон;
+- жёсткие ограничения;
+- допустимое и недопустимое поведение;
+- жанровые ориентиры;
+- ожидания от оценки;
+- таксономию паттернов;
+- философию примеров.
+
+## Когда изменение относится к адаптеру
+
+Кладите изменение в адаптер, если оно влияет на:
+
+- упаковку под конкретный инструмент;
+- платформенные метаданные;
+- платформенные формулировки для вызова;
+- правила загрузки локальных справочных файлов;
+- форматные ограничения конкретной платформы.
+
+## Текущее правило репозитория
+
+В этом репозитории `core/` определяет редакторский стандарт, а `adapters/` упаковывает этот стандарт под разные среды исполнения.
+
+Смотрите на адаптеры как на верные реализации `core/`, а не как на независимые ветки промптов.

@@ -1,121 +1,111 @@
-# Editorial Skill for Natural Russian Business Writing
+# Редакторский инструмент для естественного делового письма на русском
 
-This repository contains an editorial skill and prompt-engineering toolkit for rewriting Russian-language business text so it sounds natural, clear, professional, and human.
+Этот репозиторий содержит редакторский инструмент и набор спецификаций для prompt-инженерии, который помогает переписывать русскоязычный деловой текст так, чтобы он звучал естественно, ясно, профессионально и по-человечески.
 
-Use it when a text feels AI-generated, overly polished, bureaucratic, template-like, or corporately empty, but still needs to stay business-appropriate, precise, and factually intact.
+Используйте его, когда текст выглядит нейросетевым, слишком отполированным, канцелярским, шаблонным или корпоративно-пустым, но при этом должен оставаться деловым, точным и фактически корректным.
 
-The project combines two things:
+## Зачем это нужно
 
-- an editorial framework for natural Russian business writing
-- a reusable AI-ready specification with reference patterns, examples, evaluation cases, and a Codex adapter
+Обычные промпты в духе «сделай текст более человечным» часто ошибаются в одну из двух сторон:
 
-## Why This Exists
+- сглаживают текст, но делают его пустее, шаблоннее и искусственнее;
+- делают текст живее ценой точности, делового тона и смысловой дисциплины.
 
-Generic "humanizer" prompts often do one of two things badly:
+Этот репозиторий решает более узкую и практическую задачу: русскоязычному деловому письму чаще нужна не «теплота», а аккуратная редактура. То есть нужно убрать нейрояз, канцелярит, карьерные штампы и синтетическую гладкость, сохранив смысл, намерение, ограничения и профессиональный тон.
 
-- they smooth the text but make it emptier, more generic, or more synthetic
-- they make the text sound more casual or "alive" at the cost of precision, business tone, or factual discipline
+Цель не в том, чтобы украсить текст. Цель в том, чтобы он читался как текст компетентного взрослого человека.
 
-This project exists to solve a narrower and more practical problem: Russian business writing often needs not softer wording, but disciplined editorial rewriting. That means removing AI phrasing, bureaucracy, recruiter-template language, and synthetic polish while preserving meaning, intent, constraints, and professional tone.
+## Чем этот инструмент отличается от обычных humanizer-промптов
 
-The goal is not to decorate text. The goal is to make it read like it was written by a competent professional person.
+Этот репозиторий строже и редакторски точнее, чем типичный промпт «сделай по-человечески».
 
-## How It Differs From Generic Humanizers
+Он спроектирован так, чтобы:
 
-This repository is stricter and more editorial than a typical "make it sound human" prompt.
+- сохранять факты, намерение и деловую логику;
+- не придумывать мотивацию, достижения, эмоции и новые детали;
+- беречь техническую точность в требованиях, кейсах и тестовых заданиях;
+- не переисправлять текст, если он и так звучит нормально;
+- распознавать не только явные AI-штампы, но и более тонкие признаки: синтетическую гладкость, карьерно-шаблонный тон, пустую абстрактность и «слишком правильный» ритм.
 
-It is designed to:
+Это не одноразовый промпт, а небольшая редакторская система:
 
-- preserve facts, intent, and business logic
-- avoid invented motivation, achievements, or emotional color
-- protect technical precision in requirements, project descriptions, and test tasks
-- prevent over-editing when the source is already good
-- detect not only obvious AI phrasing, but also subtler markers like synthetic smoothness, recruiter-template tone, empty abstraction, and over-correct rhythm
+- базовая спецификация;
+- справочник паттернов;
+- справочник примеров;
+- набор кейсов для оценки;
+- платформенные адаптеры.
 
-It also treats humanization as a system rather than a one-off prompt:
+## Что входит в репозиторий
 
-- core specification
-- pattern reference
-- examples reference
-- evaluation cases
-- platform adapter
+- платформенно-нейтральное ядро в `core/`;
+- справочные материалы по паттернам и примерам;
+- кейсы и рубрика для сравнения версий;
+- рабочий адаптер для Codex;
+- заготовки адаптеров для Claude Code, ChatGPT и Gemini.
 
-So the project is less about "making text nicer" and more about creating a reusable editorial standard for natural Russian business writing.
+## Для каких задач подходит
 
-## What This Is
+Используйте инструмент для:
 
-This is not just a single prompt or a style note.
+- сопроводительных писем;
+- откликов на вакансии;
+- сообщений рекрутерам;
+- деловой переписки;
+- коротких рабочих сообщений;
+- самопрезентаций;
+- описаний проектов;
+- описаний кейсов;
+- технических требований;
+- тестовых заданий.
 
-It is a small editorial system with:
+## Для кого это
 
-- a platform-neutral core specification
-- reusable pattern and example references
-- evaluation cases for comparing revisions
-- a Codex adapter based on the working skill implementation
+- для людей, которые пишут профессиональные тексты на русском;
+- для кандидатов, которые готовят отклики, письма и коммуникацию с рекрутерами;
+- для менеджеров, лидов и специалистов, которые редактируют деловую коммуникацию;
+- для команд, которые строят AI-процессы вокруг русскоязычного делового письма;
+- для специалистов по prompt-инженерии, которым нужен воспроизводимый редакторский стандарт, а не один удачный промпт.
 
-## What It Helps With
+## Для чего это не подходит
 
-Use it for:
+- для запроса в духе «сделай потеплее» без редакторской дисциплины;
+- для креативного письма или brand voice-задач, где важнее выдумка, чем точность;
+- для переписывания повседневной переписки;
+- для SEO-рифрайта;
+- для генерации продажных текстов;
+- для случаев, где модель должна сама придумывать мотивацию, достижения или нарратив.
 
-- cover letters
-- job application responses
-- recruiter messages
-- business correspondence
-- short work messages
-- self-presentations
-- project descriptions
-- case descriptions
-- technical requirements
-- test assignments
+## Редакторская цель
 
-## Who This Is For
+Итоговый текст должен звучать:
 
-- people who write professional text in Russian
-- candidates working on responses, cover letters, and recruiter communication
-- managers, leads, and specialists who edit business communication
-- teams building AI workflows for Russian-language business writing
-- prompt engineers who want a reusable editorial spec rather than a one-off prompt
+- естественно;
+- ясно;
+- конкретно;
+- спокойно;
+- профессионально;
+- по-человечески.
 
-## Who This Is Not For
+Он не должен превращаться в:
 
-- people looking for a generic "make it warmer" prompt
-- creative writing or brand-voice writing where invention matters more than factual discipline
-- casual chat rewriting
-- SEO rewriting
-- sales copy generation
-- users who want the system to invent motivation, achievements, or narrative color
+- канцелярский текст;
+- рекламную подачу;
+- карьерно-шаблонный язык;
+- корпоративный жаргон;
+- синтетически отполированный нейросетевой ответ;
+- чрезмерно разговорную речь.
 
-## Editorial Goal
+На практике это означает редактуру тона, ритма и формулировок без подмены фактов, размывания смысла и замены одного шаблона другим.
 
-The goal is to make Russian business writing sound:
+## Базовые принципы
 
-- natural
-- clear
-- specific
-- calm
-- professional
-- human
+- Сохранять смысл, факты и намерение.
+- Улучшать формулировки, ясность и ритм, а не перепридумывать содержание.
+- Не добавлять новый опыт, мотивацию, числа, достижения, сроки или эмоциональные акценты.
+- Редактировать минимально, если исходник и так звучит естественно.
+- Не заменять один шаблон другим.
 
-without turning it into:
-
-- bureaucratic text
-- ad copy
-- recruiter-template language
-- corporate jargon
-- synthetic "AI polish"
-- overly casual conversation
-
-In practice, this means editing for tone, rhythm, and clarity without inventing facts, diluting meaning, or replacing one template with another.
-
-## Principles
-
-- Preserve meaning, facts, and intent.
-- Improve style, clarity, rhythm, and wording, not the underlying content.
-- Do not invent experience, motivation, numbers, achievements, timelines, or emotional framing.
-- Edit minimally when the source already sounds natural.
-- Do not replace one template with another.
-
-## Repository Structure
+## Структура репозитория
 
 ```text
 editorial-skill-for-natural-russian-business-writing/
@@ -123,75 +113,112 @@ editorial-skill-for-natural-russian-business-writing/
 |-- LICENSE
 |-- core/
 |   |-- prompt-spec.md
-|   |-- prompt-spec.en.md
 |   |-- patterns.md
 |   |-- examples.md
 |   |-- eval-cases.md
 |   `-- eval-rubric.md
 `-- adapters/
     |-- README.md
-    `-- codex/
-        |-- SKILL.md
-        |-- agents/
-        |   `-- openai.yaml
-        `-- references/
-            |-- patterns.md
-            `-- examples.md
+    |-- adapter-contract.md
+    |-- sync-matrix.md
+    |-- _template/
+    |   |-- README.md
+    |   `-- adapter.yaml
+    |-- codex/
+    |   |-- adapter.yaml
+    |   |-- SKILL.md
+    |   |-- agents/
+    |   |   `-- openai.yaml
+    |   `-- references/
+    |       |-- patterns.md
+    |       `-- examples.md
+    |-- claude-code/
+    |   |-- README.md
+    |   `-- adapter.yaml
+    |-- chatgpt/
+    |   |-- README.md
+    |   `-- adapter.yaml
+    `-- gemini/
+        |-- README.md
+        `-- adapter.yaml
 ```
 
-## How To Use
+## Языковая политика
 
-### Generic LLM / Manual Use
+Этот репозиторий ориентирован в первую очередь на русскоязычную аудиторию.
 
-Use [`core/prompt-spec.md`](./core/prompt-spec.md) as:
+По умолчанию:
 
-- a system prompt
-- a custom instruction block
-- an agent profile
-- a reusable editorial policy in your own workflow
+- вся документация ведётся на русском;
+- все редакторские инструкции ведутся на русском;
+- `core/` остаётся основным источником редакторской логики;
+- платформенные адаптеры подстраивают упаковку под конкретный инструмент, но не меняют сам стандарт.
 
-The main specification is in Russian: [`core/prompt-spec.md`](./core/prompt-spec.md).
+Если позже понадобится англоязычная публикационная версия, её лучше делать как отдельный слой экспорта, а не как второй параллельный источник правды внутри основного репозитория.
 
-An English companion version is available here: [`core/prompt-spec.en.md`](./core/prompt-spec.en.md).
+## Стратегия адаптеров
 
-Use [`core/patterns.md`](./core/patterns.md), [`core/examples.md`](./core/examples.md), [`core/eval-cases.md`](./core/eval-cases.md), and [`core/eval-rubric.md`](./core/eval-rubric.md) as supporting reference files.
+`core/` остаётся единственным источником правды для редакторской логики.
 
-### Codex Use
+`adapters/` нужен для упаковки этого же стандарта под разные среды исполнения без расщепления политики. Хороший адаптер должен оставаться тонким:
 
-Use the adapter in [`adapters/codex`](./adapters/codex/), which contains the working Codex skill package:
+- один основной файл инструкций под платформу;
+- локальные справочные файлы только там, где они реально помогают платформе;
+- платформенные метаданные и конфигурационные файлы только там, где этого требует инструмент;
+- общая валидация через `core/eval-cases.md` и `core/eval-rubric.md`.
 
-- `SKILL.md`
-- `agents/openai.yaml`
-- `references/patterns.md`
-- `references/examples.md`
+Правила для адаптеров описаны в:
 
-Source-of-truth and synchronization rules between `core/` and platform adapters are documented in [`adapters/README.md`](./adapters/README.md).
+- [`adapters/README.md`](./adapters/README.md);
+- [`adapters/adapter-contract.md`](./adapters/adapter-contract.md);
+- [`adapters/sync-matrix.md`](./adapters/sync-matrix.md).
 
-## Language
+## Как использовать
 
-The repository documentation is in English so the project is easier to publish and reuse across tools.
+### Любая LLM или ручной сценарий
 
-The main editorial specification is in Russian because the skill operates on Russian-language business writing and the style constraints are more precise in the working language.
+Используйте [`core/prompt-spec.md`](./core/prompt-spec.md) как:
 
-An English version of the prompt spec is included alongside it for portability and reference.
+- системный промпт;
+- блок пользовательских инструкций;
+- профиль агента;
+- базовую редакторскую политику в своём рабочем процессе.
 
-## Current Status
+Поддерживающие материалы:
 
-This version is ready to use.
+- [`core/patterns.md`](./core/patterns.md);
+- [`core/examples.md`](./core/examples.md);
+- [`core/eval-cases.md`](./core/eval-cases.md);
+- [`core/eval-rubric.md`](./core/eval-rubric.md).
 
-The repository already includes:
+### Codex
 
-1. a platform-neutral core specification
-2. supporting pattern and example references
-3. evaluation cases for prompt and adapter comparison
-4. a working Codex adapter
+Используйте адаптер в [`adapters/codex`](./adapters/codex/). В нём лежат:
 
-Further improvements are optional and mostly about refinement, not missing fundamentals. The most useful next additions would be:
+- `adapter.yaml`;
+- `SKILL.md`;
+- `agents/openai.yaml`;
+- `references/patterns.md`;
+- `references/examples.md`.
 
-1. a lightweight evaluation rubric or scorecard on top of the existing cases
-2. more edge-case technical and managerial before/after examples
-3. adapters for other platforms beyond Codex
+## Текущее состояние
 
-## Positioning
+Текущая версия уже пригодна к использованию.
 
-Treat this repository as an editorial skill for natural Russian business writing, not as a one-off prompt.
+В репозитории уже есть:
+
+1. платформенно-нейтральное ядро;
+2. справочники паттернов и примеров;
+3. кейсы и рубрика для сравнения версий;
+4. рабочий адаптер для Codex;
+5. заготовки адаптеров для Claude Code, ChatGPT и Gemini.
+
+Следующие полезные шаги:
+
+1. добавить лёгкий автоматизированный шаблон оценки или сценарий сравнения поверх текущих кейсов;
+2. расширить набор граничных примеров для технических и управленческих текстов;
+3. довести до рабочего состояния адаптеры для Claude Code, ChatGPT и Gemini.
+
+## Позиционирование
+
+Смотрите на этот репозиторий как на редакторский инструмент для естественного делового письма на русском, а не как на один удачный промпт.
