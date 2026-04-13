@@ -33,6 +33,7 @@
 - справочник паттернов;
 - справочник примеров;
 - набор кейсов для оценки;
+- лёгкий eval-runner для повторяемых прогонов;
 - платформенные адаптеры.
 
 ## Что входит в репозиторий
@@ -40,6 +41,7 @@
 - платформенно-нейтральное ядро в `core/`;
 - справочные материалы по паттернам и примерам;
 - кейсы и рубрика для сравнения версий;
+- лёгкий eval-runner для повторяемых прогонов;
 - рабочие адаптеры для Codex и Claude Code;
 - заготовки адаптеров для ChatGPT и Gemini.
 
@@ -119,6 +121,8 @@ editorial-skill-for-natural-russian-business-writing/
 |   `-- eval-rubric.md
 |-- plans/
 |   `-- development-plan.md
+|-- scripts/
+|   `-- eval_runner.py
 `-- adapters/
     |-- README.md
     |-- adapter-contract.md
@@ -349,6 +353,58 @@ cp -R ./adapters/codex/* ~/.codex/skills/humanize-russian-business-text/
 
 Если вы тестируете инструмент системно, используйте [`core/eval-cases.md`](./core/eval-cases.md) и [`core/eval-rubric.md`](./core/eval-rubric.md).
 
+## Лёгкий eval-runner
+
+В репозитории есть минимальный CLI-сценарий для повторяемой оценки без внешних зависимостей:
+
+- он читает кейсы прямо из [`core/eval-cases.md`](./core/eval-cases.md);
+- использует шкалу и правила интерпретации из [`core/eval-rubric.md`](./core/eval-rubric.md);
+- готовит шаблон прогона и собирает итоговый markdown-отчёт.
+
+Скрипт лежит в [`scripts/eval_runner.py`](./scripts/eval_runner.py).
+
+### Базовый сценарий
+
+1. Создайте шаблон прогона:
+
+```powershell
+python scripts/eval_runner.py init-run --name codex-smoke --target "codex adapter" --output tmp/codex-smoke.json
+```
+
+2. Заполните в JSON для каждого кейса:
+
+- `candidate_output` — итоговый ответ модели;
+- `scores` — оценки `0`, `1` или `2` по шести критериям;
+- `notes` — короткую заметку, если она нужна.
+
+3. Соберите отчёт:
+
+```powershell
+python scripts/eval_runner.py report --input tmp/codex-smoke.json --output tmp/codex-smoke-report.md
+```
+
+### Полезные команды
+
+Выгрузить кейсы в JSON:
+
+```powershell
+python scripts/eval_runner.py export-cases --output tmp/eval-cases.json
+```
+
+Создать шаблон прогона:
+
+```powershell
+python scripts/eval_runner.py init-run --output tmp/manual-eval.json
+```
+
+Собрать отчёт и вывести его в консоль:
+
+```powershell
+python scripts/eval_runner.py report --input tmp/manual-eval.json
+```
+
+Этот сценарий специально остаётся лёгким: он автоматизирует структуру прогона, валидацию оценок и сводку, но не заменяет редакторское суждение.
+
 ## Текущее состояние
 
 Текущая версия уже пригодна к использованию.
@@ -358,8 +414,9 @@ cp -R ./adapters/codex/* ~/.codex/skills/humanize-russian-business-text/
 1. платформенно-нейтральное ядро;
 2. справочники паттернов и примеров;
 3. кейсы и рубрика для сравнения версий;
-4. рабочие адаптеры для Codex и Claude Code;
-5. заготовки адаптеров для ChatGPT и Gemini.
+4. лёгкий eval-runner для повторяемых прогонов;
+5. рабочие адаптеры для Codex и Claude Code;
+6. заготовки адаптеров для ChatGPT и Gemini.
 
 Планы развития вынесены в [`plans/development-plan.md`](./plans/development-plan.md).
 
