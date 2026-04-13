@@ -321,7 +321,7 @@ cp -R ./adapters/skill/* ~/.codex/skills/humanize-russian-business-text/
 Для обычных чатов используйте общий portable prompt из [`adapters/prompt/PROMPT.md`](./adapters/prompt/PROMPT.md).
 
 1. Откройте [`adapters/prompt/PROMPT.md`](./adapters/prompt/PROMPT.md).
-2. Скопируйте его в системные инструкции, custom instructions или в начало диалога.
+2. Скопируйте [`adapters/prompt/PROMPT.md`](./adapters/prompt/PROMPT.md) целиком в начало нового диалога.
 3. Вставьте исходный текст.
 4. Дайте короткую задачу: что это за жанр, насколько глубоко можно править и нужен ли комментарий к правкам.
 
@@ -336,11 +336,21 @@ cp -R ./adapters/skill/* ~/.codex/skills/humanize-russian-business-text/
 ...
 ```
 
-Если нужна более точная настройка, подключайте дополнительно:
+`PROMPT.md` самодостаточен для обычного чата.
 
-- [`adapters/prompt/references/patterns.md`](./adapters/prompt/references/patterns.md), когда текст явно отдаёт нейросетевыми штампами, канцеляритом, карьерным шаблоном или корпоративным жаргоном;
-- [`adapters/prompt/references/examples.md`](./adapters/prompt/references/examples.md), когда важно попасть в правильную глубину правки;
-- [`core/eval-cases.md`](./core/eval-cases.md) и [`core/eval-rubric.md`](./core/eval-rubric.md), когда вы сравниваете версии промпта, модели или адаптера.
+Если нужен более точный контроль, можно вручную добавить `references` как дополнительный контекст:
+
+- [`adapters/prompt/references/patterns.md`](./adapters/prompt/references/patterns.md) для AI-штампов, канцелярита, карьерного шаблона и слишком гладкого тона;
+- [`adapters/prompt/references/examples.md`](./adapters/prompt/references/examples.md) для калибровки глубины правки.
+
+Обычный чат не откроет эти файлы по ссылке сам, поэтому их нужно вставлять в диалог вручную целиком или релевантным фрагментом после `PROMPT.md` и перед исходным текстом.
+
+Отдельные сценарии использования описаны в:
+
+- [`adapters/prompt/usage/chatgpt.md`](./adapters/prompt/usage/chatgpt.md);
+- [`adapters/prompt/usage/gemini.md`](./adapters/prompt/usage/gemini.md).
+
+Если вы сравниваете версии промпта, модели или адаптера системно, используйте [`core/eval-cases.md`](./core/eval-cases.md) и [`core/eval-rubric.md`](./core/eval-rubric.md).
 
 ### Как понять, что результат хороший
 
