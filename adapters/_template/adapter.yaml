@@ -1,5 +1,5 @@
 adapter_id: template
-platform: "Platform Name"
+platform: "Delivery Type"
 status: planned
 
 source_of_truth:
@@ -12,20 +12,23 @@ source_of_truth:
 deliverables:
   primary_instruction:
     path: TBD
-    role: основной вход платформы
+    role: основной entrypoint адаптера
   references: []
   platform_config: []
+  supporting_docs: []
 
 allowed_adapter_changes:
   - packaging
   - metadata
   - invocation wording
   - local reference loading rules
+  - install or usage docs
   - condensed or reorganized reference files
 
 forbidden_adapter_changes:
   - change editorial policy
   - soften hard constraints
+  - redefine workflow
   - invent new allowed behavior
   - replace core evaluation with adapter-only evaluation
 
@@ -34,5 +37,5 @@ validation_policy:
   release_gate: проверить поведение адаптера на общем наборе кейсов перед переводом в active
 
 notes:
-  - Замените TBD на реальные файлы платформы.
+  - Замените TBD на реальные файлы адаптера.
   - Держите адаптер тонким. Если изменение редакторское, сначала обновляйте core.

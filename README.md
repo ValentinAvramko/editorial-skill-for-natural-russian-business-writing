@@ -34,7 +34,7 @@
 - справочник примеров;
 - набор кейсов для оценки;
 - лёгкий eval-runner для повторяемых прогонов;
-- платформенные адаптеры.
+- два производных адаптера доставки: `skill` и `prompt`.
 
 ## Что входит в репозиторий
 
@@ -42,8 +42,8 @@
 - справочные материалы по паттернам и примерам;
 - кейсы и рубрика для сравнения версий;
 - лёгкий eval-runner для повторяемых прогонов;
-- рабочие адаптеры для Codex и Claude Code;
-- заготовки адаптеров для ChatGPT и Gemini.
+- единый portable skill для Codex и Claude Code;
+- единый portable prompt для ChatGPT, Gemini и похожих чатов.
 
 ## Для каких задач подходит
 
@@ -130,27 +130,28 @@ editorial-skill-for-natural-russian-business-writing/
     |-- _template/
     |   |-- README.md
     |   `-- adapter.yaml
-    |-- codex/
+    |-- skill/
     |   |-- adapter.yaml
     |   |-- SKILL.md
-    |   |-- agents/
-    |   |   `-- openai.yaml
+    |   |-- install/
+    |   |   |-- codex.md
+    |   |   `-- claude-code.md
     |   `-- references/
     |       |-- patterns.md
     |       `-- examples.md
-    |-- claude-code/
-    |   |-- adapter.yaml
-    |   |-- SKILL.md
-    |   |-- README.md
-    |   `-- references/
-    |       |-- patterns.md
-    |       `-- examples.md
-    |-- chatgpt/
-    |   |-- README.md
-    |   `-- adapter.yaml
-    `-- gemini/
-        |-- README.md
-        `-- adapter.yaml
+    |   `-- targets/
+    |       `-- codex/
+    |           `-- agents/
+    |               `-- openai.yaml
+    `-- prompt/
+        |-- adapter.yaml
+        |-- PROMPT.md
+        |-- references/
+        |   |-- patterns.md
+        |   `-- examples.md
+        `-- usage/
+            |-- chatgpt.md
+            `-- gemini.md
 ```
 
 ## Языковая политика
@@ -172,12 +173,12 @@ editorial-skill-for-natural-russian-business-writing/
 
 `core/` остаётся единственным источником правды для редакторской логики.
 
-`adapters/` нужен для упаковки этого же стандарта под разные среды исполнения без расщепления политики. Хороший адаптер должен оставаться тонким:
+`adapters/` нужен для упаковки этого же стандарта под разные среды исполнения без расщепления политики. Сейчас в репозитории есть два deliverable-слоя:
 
-- один основной файл инструкций под платформу;
-- локальные справочные файлы только там, где они реально помогают платформе;
-- платформенные метаданные и конфигурационные файлы только там, где этого требует инструмент;
-- общая валидация через `core/eval-cases.md` и `core/eval-rubric.md`.
+- `adapters/skill/` для portable skill-а в Codex и Claude Code;
+- `adapters/prompt/` для portable prompt-а в ChatGPT, Gemini и похожих чатах.
+
+Оба адаптера являются производными от `core/`, а не отдельными ветками редакторской логики.
 
 Правила для адаптеров описаны в:
 
@@ -189,15 +190,15 @@ editorial-skill-for-natural-russian-business-writing/
 
 Ниже описаны три сценария:
 
-1. готовая установка в Codex через skill;
-2. готовая установка в Claude Code через skill;
-3. ручное использование в ChatGPT или Gemini.
+1. установка общего `skill` в Codex;
+2. установка общего `skill` в Claude Code;
+3. ручное использование общего `prompt` в ChatGPT, Gemini и похожих чатах.
 
-Сейчас полностью готовые платформенные адаптеры есть для Codex и Claude Code. Для ChatGPT и Gemini пока используйте материалы из `core/` вручную.
+Во всех трёх сценариях `core/` остаётся единственным каноническим источником редакторской логики.
 
 ### Установка в Codex
 
-Важно: в этом репозитории skill лежит не в корне, а в каталоге [`adapters/codex`](./adapters/codex/). Поэтому для установки в Codex нужно копировать именно содержимое этого каталога.
+Важно: в этом репозитории переносимый skill лежит в каталоге [`adapters/skill`](./adapters/skill/). Поэтому для установки в Codex нужно копировать именно содержимое этого каталога.
 
 Имя skill-а: `humanize-russian-business-text`
 
@@ -207,14 +208,14 @@ Windows PowerShell:
 
 ```powershell
 New-Item -ItemType Directory -Force "$HOME\.codex\skills\humanize-russian-business-text" | Out-Null
-Copy-Item -Recurse -Force ".\adapters\codex\*" "$HOME\.codex\skills\humanize-russian-business-text\"
+Copy-Item -Recurse -Force ".\adapters\skill\*" "$HOME\.codex\skills\humanize-russian-business-text\"
 ```
 
 macOS / Linux:
 
 ```bash
 mkdir -p ~/.codex/skills/humanize-russian-business-text
-cp -R ./adapters/codex/* ~/.codex/skills/humanize-russian-business-text/
+cp -R ./adapters/skill/* ~/.codex/skills/humanize-russian-business-text/
 ```
 
 #### Вариант 2. Если хотите сначала клонировать репозиторий
@@ -225,7 +226,7 @@ Windows PowerShell:
 git clone https://github.com/ValentinAvramko/editorial-skill-for-natural-russian-business-writing.git
 cd editorial-skill-for-natural-russian-business-writing
 New-Item -ItemType Directory -Force "$HOME\.codex\skills\humanize-russian-business-text" | Out-Null
-Copy-Item -Recurse -Force ".\adapters\codex\*" "$HOME\.codex\skills\humanize-russian-business-text\"
+Copy-Item -Recurse -Force ".\adapters\skill\*" "$HOME\.codex\skills\humanize-russian-business-text\"
 ```
 
 macOS / Linux:
@@ -234,7 +235,7 @@ macOS / Linux:
 git clone https://github.com/ValentinAvramko/editorial-skill-for-natural-russian-business-writing.git
 cd editorial-skill-for-natural-russian-business-writing
 mkdir -p ~/.codex/skills/humanize-russian-business-text
-cp -R ./adapters/codex/* ~/.codex/skills/humanize-russian-business-text/
+cp -R ./adapters/skill/* ~/.codex/skills/humanize-russian-business-text/
 ```
 
 После копирования перезапустите Codex, если skill не появился сразу.
@@ -247,7 +248,7 @@ cp -R ./adapters/codex/* ~/.codex/skills/humanize-russian-business-text/
 - `adapter.yaml`
 - `references/patterns.md`
 - `references/examples.md`
-- `agents/openai.yaml`
+- `targets/codex/agents/openai.yaml`
 
 ### Использование в Codex
 
@@ -284,11 +285,11 @@ cp -R ./adapters/codex/* ~/.codex/skills/humanize-russian-business-text/
 
 ### Установка в Claude Code
 
-Для Claude Code в репозитории есть отдельный рабочий адаптер в [`adapters/claude-code`](./adapters/claude-code/).
+Для Claude Code используется тот же переносимый skill из [`adapters/skill`](./adapters/skill/).
 
 Рекомендуемый вариант установки:
 
-1. скопировать содержимое [`adapters/claude-code/`](./adapters/claude-code/) в `~/.claude/skills/humanize-russian-business-text/`;
+1. скопировать содержимое [`adapters/skill/`](./adapters/skill/) в `~/.claude/skills/humanize-russian-business-text/`;
 2. убедиться, что внутри лежит `SKILL.md`;
 3. перезапустить Claude Code, если skill не появился сразу.
 
@@ -313,13 +314,13 @@ cp -R ./adapters/codex/* ~/.codex/skills/humanize-russian-business-text/
 [ваш текст]
 ```
 
-Подробные инструкции по установке лежат в [`adapters/claude-code/README.md`](./adapters/claude-code/README.md).
+Подробные инструкции по установке лежат в [`adapters/skill/install/claude-code.md`](./adapters/skill/install/claude-code.md).
 
 ### Ручное использование в ChatGPT или Gemini
 
-Если отдельный адаптер для платформы ещё не готов, используйте базовую спецификацию вручную.
+Для обычных чатов используйте общий portable prompt из [`adapters/prompt/PROMPT.md`](./adapters/prompt/PROMPT.md).
 
-1. Откройте [`core/prompt-spec.md`](./core/prompt-spec.md).
+1. Откройте [`adapters/prompt/PROMPT.md`](./adapters/prompt/PROMPT.md).
 2. Скопируйте его в системные инструкции, custom instructions или в начало диалога.
 3. Вставьте исходный текст.
 4. Дайте короткую задачу: что это за жанр, насколько глубоко можно править и нужен ли комментарий к правкам.
@@ -337,8 +338,8 @@ cp -R ./adapters/codex/* ~/.codex/skills/humanize-russian-business-text/
 
 Если нужна более точная настройка, подключайте дополнительно:
 
-- [`core/patterns.md`](./core/patterns.md), когда текст явно отдаёт нейросетевыми штампами, канцеляритом, карьерным шаблоном или корпоративным жаргоном;
-- [`core/examples.md`](./core/examples.md), когда важно попасть в правильную глубину правки;
+- [`adapters/prompt/references/patterns.md`](./adapters/prompt/references/patterns.md), когда текст явно отдаёт нейросетевыми штампами, канцеляритом, карьерным шаблоном или корпоративным жаргоном;
+- [`adapters/prompt/references/examples.md`](./adapters/prompt/references/examples.md), когда важно попасть в правильную глубину правки;
 - [`core/eval-cases.md`](./core/eval-cases.md) и [`core/eval-rubric.md`](./core/eval-rubric.md), когда вы сравниваете версии промпта, модели или адаптера.
 
 ### Как понять, что результат хороший
