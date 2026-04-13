@@ -121,8 +121,7 @@ editorial-skill-for-natural-russian-business-writing/
 |   `-- eval-rubric.md
 |-- plans/
 |   |-- development-plan.md
-|   |-- release-checklist.md
-|   `-- v1.0.0-release-notes.md
+|   `-- release-checklist.md
 |-- scripts/
 |   |-- build_adapters.py
 |   `-- eval_runner.py

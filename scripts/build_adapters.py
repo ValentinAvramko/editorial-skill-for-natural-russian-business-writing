@@ -149,7 +149,11 @@ def build_expected_files() -> list[RenderedFile]:
 def sync_files(files: list[RenderedFile]) -> int:
     changed = 0
     for rendered in files:
-        current = rendered.path.read_text(encoding="utf-8-sig") if rendered.path.exists() else None
+        current = (
+            ensure_trailing_newline(normalize_newlines(rendered.path.read_text(encoding="utf-8-sig")).strip())
+            if rendered.path.exists()
+            else None
+        )
         if current != rendered.content:
             rendered.path.parent.mkdir(parents=True, exist_ok=True)
             rendered.path.write_text(rendered.content, encoding="utf-8")
@@ -164,7 +168,11 @@ def sync_files(files: list[RenderedFile]) -> int:
 def check_files(files: list[RenderedFile]) -> int:
     drifted: list[str] = []
     for rendered in files:
-        current = rendered.path.read_text(encoding="utf-8-sig") if rendered.path.exists() else ""
+        current = (
+            ensure_trailing_newline(normalize_newlines(rendered.path.read_text(encoding="utf-8-sig")).strip())
+            if rendered.path.exists()
+            else ""
+        )
         if current != rendered.content:
             drifted.append(to_repo_relative(rendered.path))
 
