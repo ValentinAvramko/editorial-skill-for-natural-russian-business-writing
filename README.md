@@ -129,6 +129,7 @@ editorial-skill-for-natural-russian-business-writing/
 |   |-- eval-cases.md
 |   `-- eval-rubric.md
 `-- adapters/
+    |-- README.md
     `-- codex/
         |-- SKILL.md
         |-- agents/
@@ -163,6 +164,8 @@ Use the adapter in [`adapters/codex`](./adapters/codex/), which contains the wor
 - `agents/openai.yaml`
 - `references/patterns.md`
 - `references/examples.md`
+
+Source-of-truth and synchronization rules between `core/` and platform adapters are documented in [`adapters/README.md`](./adapters/README.md).
 
 ## Language
 
