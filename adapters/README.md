@@ -9,6 +9,7 @@
 
 - [`adapters/adapter-contract.md`](./adapter-contract.md)
 - [`adapters/sync-matrix.md`](./sync-matrix.md)
+- [`adapters/smoke-checklist.md`](./smoke-checklist.md)
 - [`adapters/_template/`](./_template/)
 
 ## Источник правды

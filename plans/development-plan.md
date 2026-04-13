@@ -13,16 +13,16 @@
   - `adapters/prompt/` для ChatGPT, Gemini и похожих чатов.
 - Зафиксировано правило: `core/` остаётся единственным источником правды для редакторской логики.
 - `adapters/prompt/PROMPT.md` доведён до самодостаточного portable prompt без обязательных ссылок на локальные reference-файлы, а сценарии использования для ChatGPT и Gemini зафиксированы в `adapters/prompt/usage/`.
+- Добавлен короткий smoke-checklist для ручной проверки `skill` и `prompt` перед выпуском.
 
 ## Ближайшие задачи
 
-1. Сделать короткий smoke-checklist для ручной проверки `skill` и `prompt` перед выпуском.
-2. Зафиксировать рабочий процесс синхронизации между `core/prompt-spec.md`, `adapters/skill/SKILL.md` и `adapters/prompt/PROMPT.md`.
-3. Решить, нужен ли генератор или вспомогательный скрипт, чтобы собирать `SKILL.md` и `PROMPT.md` из `core` и уменьшить риск drift.
-4. Сделать короткий release-checklist перед `v1.0.0`.
-5. Сделать первый release / `v1.0.0`.
-6. Оформить Topics и Website для GitHub.
-7. Подготовить хороший текст для первого pinned post / LinkedIn-анонса.
+1. Зафиксировать рабочий процесс синхронизации между `core/prompt-spec.md`, `adapters/skill/SKILL.md` и `adapters/prompt/PROMPT.md`.
+2. Решить, нужен ли генератор или вспомогательный скрипт, чтобы собирать `SKILL.md` и `PROMPT.md` из `core` и уменьшить риск drift.
+3. Сделать короткий release-checklist перед `v1.0.0`.
+4. Сделать первый release / `v1.0.0`.
+5. Оформить Topics и Website для GitHub.
+6. Подготовить хороший текст для первого pinned post / LinkedIn-анонса.
 
 ## Принципы ведения планов
 

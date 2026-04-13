@@ -364,6 +364,8 @@ cp -R ./adapters/skill/* ~/.codex/skills/humanize-russian-business-text/
 
 Если вы тестируете инструмент системно, используйте [`core/eval-cases.md`](./core/eval-cases.md) и [`core/eval-rubric.md`](./core/eval-rubric.md).
 
+Для короткой ручной проверки `skill` и `prompt` перед выпуском используйте [`adapters/smoke-checklist.md`](./adapters/smoke-checklist.md).
+
 ## Лёгкий eval-runner
 
 В репозитории есть минимальный CLI-сценарий для повторяемой оценки без внешних зависимостей:
