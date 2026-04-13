@@ -4,6 +4,8 @@ This file provides a compact evaluation set for checking whether the editorial s
 
 Use these cases to compare prompt revisions, model variants, or platform adapters.
 
+For lightweight scoring and pass/fail interpretation, use [`core/eval-rubric.md`](./eval-rubric.md) together with this file.
+
 ## Evaluation Criteria
 
 For each case, check:

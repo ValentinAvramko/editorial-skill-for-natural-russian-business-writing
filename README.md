@@ -126,7 +126,8 @@ editorial-skill-for-natural-russian-business-writing/
 |   |-- prompt-spec.en.md
 |   |-- patterns.md
 |   |-- examples.md
-|   `-- eval-cases.md
+|   |-- eval-cases.md
+|   `-- eval-rubric.md
 `-- adapters/
     `-- codex/
         |-- SKILL.md
@@ -152,7 +153,7 @@ The main specification is in Russian: [`core/prompt-spec.md`](./core/prompt-spec
 
 An English companion version is available here: [`core/prompt-spec.en.md`](./core/prompt-spec.en.md).
 
-Use [`core/patterns.md`](./core/patterns.md), [`core/examples.md`](./core/examples.md), and [`core/eval-cases.md`](./core/eval-cases.md) as supporting reference files.
+Use [`core/patterns.md`](./core/patterns.md), [`core/examples.md`](./core/examples.md), [`core/eval-cases.md`](./core/eval-cases.md), and [`core/eval-rubric.md`](./core/eval-rubric.md) as supporting reference files.
 
 ### Codex Use
 
