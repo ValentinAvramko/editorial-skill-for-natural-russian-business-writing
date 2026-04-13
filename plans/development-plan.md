@@ -15,14 +15,14 @@
 - `adapters/prompt/PROMPT.md` доведён до самодостаточного portable prompt без обязательных ссылок на локальные reference-файлы, а сценарии использования для ChatGPT и Gemini зафиксированы в `adapters/prompt/usage/`.
 - Добавлен короткий smoke-checklist для ручной проверки `skill` и `prompt` перед выпуском.
 - Зафиксирован явный workflow синхронизации между `core/prompt-spec.md`, `adapters/skill/SKILL.md` и `adapters/prompt/PROMPT.md` через `adapters/sync-matrix.md`.
+- Решение по drift принято в пользу лёгкого вспомогательного build/check-скрипта: `scripts/build_adapters.py` пересобирает `SKILL.md`, `PROMPT.md` и локальные `references/` из `core/`.
 
 ## Ближайшие задачи
 
-1. Решить, нужен ли генератор или вспомогательный скрипт, чтобы собирать `SKILL.md` и `PROMPT.md` из `core` и уменьшить риск drift.
-2. Сделать короткий release-checklist перед `v1.0.0`.
-3. Сделать первый release / `v1.0.0`.
-4. Оформить Topics и Website для GitHub.
-5. Подготовить хороший текст для первого pinned post / LinkedIn-анонса.
+1. Сделать короткий release-checklist перед `v1.0.0`.
+2. Сделать первый release / `v1.0.0`.
+3. Оформить Topics и Website для GitHub.
+4. Подготовить хороший текст для первого pinned post / LinkedIn-анонса.
 
 ## Принципы ведения планов
 
