@@ -3,38 +3,35 @@ platform: "Agent Skills (Codex, Claude Code)"
 status: active
 
 source_of_truth:
-  prompt_spec: ../../core/prompt-spec.md
-  patterns: ../../core/patterns.md
-  examples: ../../core/examples.md
-  evaluation_cases: ../../core/eval-cases.md
-  evaluation_rubric: ../../core/eval-rubric.md
+  prompt_spec: core/prompt-spec.md
+  patterns: core/patterns.md
+  examples: core/examples.md
+  evaluation_cases: core/eval-cases.md
+  evaluation_rubric: core/eval-rubric.md
 
 deliverables:
   primary_instruction:
-    path: SKILL.md
+    path: adapters/skill/SKILL.md
     role: единый переносимый skill-entrypoint для агентных сред
   references:
-    - path: references/patterns.md
-      source: ../../core/patterns.md
+    - path: adapters/skill/references/patterns.md
+      source: core/patterns.md
       role: локальный справочник паттернов для runtime-распознавания
-    - path: references/examples.md
-      source: ../../core/examples.md
+    - path: adapters/skill/references/examples.md
+      source: core/examples.md
       role: локальный справочник примеров для калибровки глубины правки
   platform_config:
-    - path: targets/codex/agents/openai.yaml
+    - path: adapters/skill/agents/openai.yaml
       role: metadata интерфейса Codex/OpenAI
   supporting_docs:
-    - path: install/codex.md
-      role: инструкция по установке и вызову в Codex
-    - path: install/claude-code.md
-      role: инструкция по установке и вызову в Claude Code
+    - path: README.md
+      role: пользовательская инструкция по установке и вызову skill в Codex и Claude Code
 
 allowed_adapter_changes:
   - packaging
   - metadata
   - activation wording
   - local reference loading instructions
-  - platform-specific install docs
   - platform-specific config
 
 forbidden_adapter_changes:
@@ -45,9 +42,9 @@ forbidden_adapter_changes:
   - replace shared evaluation with adapter-only evaluation
 
 validation_policy:
-  evaluation_source: ../../core
+  evaluation_source: core
   release_gate: проверять skill на общем наборе кейсов при значимых изменениях core, SKILL.md или references
 
 notes:
-  - Каноническая редакторская логика живёт только в ../../core.
+  - Каноническая редакторская логика живёт только в core/.
   - Этот адаптер следует Agent Skills формату и предназначен для переносимого использования в Codex и Claude Code.

@@ -177,7 +177,7 @@ def check_files(files: list[RenderedFile]) -> int:
         print("drift detected:")
         for path in drifted:
             print(f"- {path}")
-        print("run `python scripts/build_adapters.py sync` to refresh the generated adapter files.")
+        print("run `python build/build_adapters.py sync` to refresh the generated adapter files.")
         return 1
 
     print("adapter artifacts are in sync")

@@ -34,7 +34,7 @@
 - справочник примеров;
 - набор кейсов для оценки;
 - лёгкий eval-runner для повторяемых прогонов;
-- два производных адаптера доставки: `skill` и `prompt`.
+- два готовых адаптера доставки: `skill` и `prompt`.
 
 ## Что входит в репозиторий
 
@@ -119,44 +119,41 @@ editorial-skill-for-natural-russian-business-writing/
 |   |-- examples.md
 |   |-- eval-cases.md
 |   `-- eval-rubric.md
+|-- build/
+|   |-- README.md
+|   |-- adapter-contract.md
+|   |-- sync-matrix.md
+|   |-- build_adapters.py
+|   |-- manifests/
+|   |   |-- skill.yaml
+|   |   `-- prompt.yaml
+|   `-- template/
+|       |-- README.md
+|       `-- adapter.yaml
+|-- test/
+|   |-- eval_runner.py
+|   `-- smoke-checklist.md
 |-- plans/
 |   |-- development-plan.md
 |   `-- release-checklist.md
-|-- scripts/
-|   |-- build_adapters.py
-|   `-- eval_runner.py
 `-- adapters/
-    |-- README.md
-    |-- adapter-contract.md
-    |-- sync-matrix.md
-    |-- _template/
-    |   |-- README.md
-    |   `-- adapter.yaml
     |-- skill/
-    |   |-- adapter.yaml
     |   |-- SKILL.md
-    |   |-- install/
-    |   |   |-- codex.md
-    |   |   `-- claude-code.md
-    |   |-- references/
-    |   |   |-- patterns.md
-    |   |   `-- examples.md
-    |   `-- targets/
-    |       `-- codex/
-    |           `-- agents/
-    |               `-- openai.yaml
+    |   |-- agents/
+    |   |   `-- openai.yaml
+    |   `-- references/
+    |       |-- patterns.md
+    |       `-- examples.md
     `-- prompt/
-        |-- adapter.yaml
         |-- PROMPT.md
-        |-- references/
-        |   |-- patterns.md
-        |   `-- examples.md
-        `-- usage/
-            |-- chatgpt.md
-            `-- gemini.md
+        `-- references/
+            |-- patterns.md
+            `-- examples.md
 ```
 
-Редакторская логика хранится в `core/`, а готовые способы использования для разных сред лежат в `adapters/`.
+Редакторская логика хранится в `core/`.
+Готовые пакеты для использования лежат в `adapters/`.
+Сборочная и служебная логика вынесена в `build/`, а всё, что относится к проверке и прогону, лежит в `test/`.
 
 ## Как использовать
 
@@ -170,7 +167,7 @@ editorial-skill-for-natural-russian-business-writing/
 
 ### Установка в Codex
 
-Важно: в этом репозитории переносимый skill лежит в каталоге [`adapters/skill`](./adapters/skill/). Поэтому для установки в Codex нужно копировать именно содержимое этого каталога.
+Переносимый skill для Codex лежит в каталоге [`adapters/skill`](./adapters/skill/). Это готовый runtime-пакет, поэтому его можно копировать целиком.
 
 Имя skill-а: `humanize-russian-business-text`
 
@@ -217,10 +214,11 @@ cp -R ./adapters/skill/* ~/.codex/skills/humanize-russian-business-text/
 В каталоге `~/.codex/skills/humanize-russian-business-text/` должны лежать:
 
 - `SKILL.md`
-- `adapter.yaml`
 - `references/patterns.md`
 - `references/examples.md`
-- `targets/codex/agents/openai.yaml`
+- `agents/openai.yaml`
+
+`openai.yaml` должен лежать именно внутри `agents/openai.yaml` в составе skill-пакета.
 
 ### Использование в Codex
 
@@ -259,11 +257,21 @@ cp -R ./adapters/skill/* ~/.codex/skills/humanize-russian-business-text/
 
 Для Claude Code используется тот же переносимый skill из [`adapters/skill`](./adapters/skill/).
 
-Рекомендуемый вариант установки:
+Windows PowerShell:
 
-1. скопировать содержимое [`adapters/skill/`](./adapters/skill/) в `~/.claude/skills/humanize-russian-business-text/`;
-2. убедиться, что внутри лежит `SKILL.md`;
-3. перезапустить Claude Code, если skill не появился сразу.
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.claude\skills\humanize-russian-business-text" | Out-Null
+Copy-Item -Recurse -Force ".\adapters\skill\*" "$HOME\.claude\skills\humanize-russian-business-text\"
+```
+
+macOS / Linux:
+
+```bash
+mkdir -p ~/.claude/skills/humanize-russian-business-text
+cp -R ./adapters/skill/* ~/.claude/skills/humanize-russian-business-text/
+```
+
+После копирования перезапустите Claude Code, если skill не появился сразу.
 
 После этого Claude Code сможет использовать адаптер как обычный skill: автоматически по описанию или вручную через `/humanize-russian-business-text`.
 
@@ -272,6 +280,8 @@ cp -R ./adapters/skill/* ~/.codex/skills/humanize-russian-business-text/
 - `~/.claude/skills/humanize-russian-business-text/SKILL.md`;
 - `~/.claude/skills/humanize-russian-business-text/references/patterns.md`;
 - `~/.claude/skills/humanize-russian-business-text/references/examples.md`.
+
+Каталог `agents/` можно оставить как есть: это часть общего skill-пакета, и Claude Code она не мешает.
 
 Пример запроса:
 
@@ -285,8 +295,6 @@ cp -R ./adapters/skill/* ~/.codex/skills/humanize-russian-business-text/
 
 [ваш текст]
 ```
-
-Подробные инструкции по установке лежат в [`adapters/skill/install/claude-code.md`](./adapters/skill/install/claude-code.md).
 
 ### Ручное использование в ChatGPT или Gemini
 
@@ -317,10 +325,10 @@ cp -R ./adapters/skill/* ~/.codex/skills/humanize-russian-business-text/
 
 Обычный чат не откроет эти файлы по ссылке сам, поэтому их нужно вставлять в диалог вручную целиком или релевантным фрагментом после `PROMPT.md` и перед исходным текстом.
 
-Отдельные сценарии использования описаны в:
+Практически это обычно выглядит так:
 
-- [`adapters/prompt/usage/chatgpt.md`](./adapters/prompt/usage/chatgpt.md);
-- [`adapters/prompt/usage/gemini.md`](./adapters/prompt/usage/gemini.md).
+- для ChatGPT достаточно вставить `PROMPT.md`, короткую рамку задачи и текст;
+- для Gemini полезно отдельно повторить ограничение «верни только итоговый текст», если модель начинает объяснять вместо редактирования.
 
 Если вы сравниваете версии промпта, модели или адаптера системно, используйте [`core/eval-cases.md`](./core/eval-cases.md) и [`core/eval-rubric.md`](./core/eval-rubric.md).
 
@@ -336,7 +344,7 @@ cp -R ./adapters/skill/* ~/.codex/skills/humanize-russian-business-text/
 
 Если вы тестируете инструмент системно, используйте [`core/eval-cases.md`](./core/eval-cases.md) и [`core/eval-rubric.md`](./core/eval-rubric.md).
 
-Для короткой ручной проверки `skill` и `prompt` перед выпуском используйте [`adapters/smoke-checklist.md`](./adapters/smoke-checklist.md).
+Для короткой ручной проверки `skill` и `prompt` перед выпуском используйте [`test/smoke-checklist.md`](./test/smoke-checklist.md).
 
 ## Лёгкий eval-runner
 
@@ -346,14 +354,14 @@ cp -R ./adapters/skill/* ~/.codex/skills/humanize-russian-business-text/
 - использует шкалу и правила интерпретации из [`core/eval-rubric.md`](./core/eval-rubric.md);
 - готовит шаблон прогона и собирает итоговый markdown-отчёт.
 
-Скрипт лежит в [`scripts/eval_runner.py`](./scripts/eval_runner.py).
+Скрипт лежит в [`test/eval_runner.py`](./test/eval_runner.py).
 
 ### Базовый сценарий
 
 1. Создайте шаблон прогона:
 
 ```powershell
-python scripts/eval_runner.py init-run --name codex-smoke --target "codex adapter" --output tmp/codex-smoke.json
+python test/eval_runner.py init-run --name codex-smoke --target "codex adapter" --output tmp/codex-smoke.json
 ```
 
 2. Заполните в JSON для каждого кейса:
@@ -365,7 +373,7 @@ python scripts/eval_runner.py init-run --name codex-smoke --target "codex adapte
 3. Соберите отчёт:
 
 ```powershell
-python scripts/eval_runner.py report --input tmp/codex-smoke.json --output tmp/codex-smoke-report.md
+python test/eval_runner.py report --input tmp/codex-smoke.json --output tmp/codex-smoke-report.md
 ```
 
 ### Полезные команды
@@ -373,19 +381,19 @@ python scripts/eval_runner.py report --input tmp/codex-smoke.json --output tmp/c
 Выгрузить кейсы в JSON:
 
 ```powershell
-python scripts/eval_runner.py export-cases --output tmp/eval-cases.json
+python test/eval_runner.py export-cases --output tmp/eval-cases.json
 ```
 
 Создать шаблон прогона:
 
 ```powershell
-python scripts/eval_runner.py init-run --output tmp/manual-eval.json
+python test/eval_runner.py init-run --output tmp/manual-eval.json
 ```
 
 Собрать отчёт и вывести его в консоль:
 
 ```powershell
-python scripts/eval_runner.py report --input tmp/manual-eval.json
+python test/eval_runner.py report --input tmp/manual-eval.json
 ```
 
 Этот сценарий специально остаётся лёгким: он автоматизирует структуру прогона, валидацию оценок и сводку, но не заменяет редакторское суждение.
@@ -400,8 +408,8 @@ python scripts/eval_runner.py report --input tmp/manual-eval.json
 2. справочники паттернов и примеров;
 3. кейсы и рубрика для сравнения версий;
 4. лёгкий eval-runner для повторяемых прогонов;
-5. рабочие адаптеры для Codex и Claude Code;
-6. заготовки адаптеров для ChatGPT и Gemini.
+5. готовый переносимый skill для Codex и Claude Code;
+6. готовый переносимый prompt для ChatGPT, Gemini и похожих чатов.
 
 Планы развития вынесены в [`plans/development-plan.md`](./plans/development-plan.md).
 

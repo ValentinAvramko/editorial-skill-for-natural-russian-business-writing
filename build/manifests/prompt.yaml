@@ -3,35 +3,32 @@ platform: "Portable Chat Prompt (ChatGPT, Gemini, etc.)"
 status: active
 
 source_of_truth:
-  prompt_spec: ../../core/prompt-spec.md
-  patterns: ../../core/patterns.md
-  examples: ../../core/examples.md
-  evaluation_cases: ../../core/eval-cases.md
-  evaluation_rubric: ../../core/eval-rubric.md
+  prompt_spec: core/prompt-spec.md
+  patterns: core/patterns.md
+  examples: core/examples.md
+  evaluation_cases: core/eval-cases.md
+  evaluation_rubric: core/eval-rubric.md
 
 deliverables:
   primary_instruction:
-    path: PROMPT.md
+    path: adapters/prompt/PROMPT.md
     role: единый переносимый prompt-entrypoint для ручного использования в чатах
   references:
-    - path: references/patterns.md
-      source: ../../core/patterns.md
+    - path: adapters/prompt/references/patterns.md
+      source: core/patterns.md
       role: локальный справочник паттернов для калибровки и сопровождения внутри репозитория; не требуется для обычного чата
-    - path: references/examples.md
-      source: ../../core/examples.md
+    - path: adapters/prompt/references/examples.md
+      source: core/examples.md
       role: локальный справочник примеров для калибровки глубины правки внутри репозитория; не требуется для обычного чата
   platform_config: []
   supporting_docs:
-    - path: usage/chatgpt.md
-      role: инструкция по ручному использованию в ChatGPT
-    - path: usage/gemini.md
-      role: инструкция по ручному использованию в Gemini
+    - path: README.md
+      role: пользовательская инструкция по ручному использованию prompt в ChatGPT, Gemini и похожих чатах
 
 allowed_adapter_changes:
   - packaging
   - manual invocation wording
   - local reference loading instructions
-  - platform-specific usage docs
 
 forbidden_adapter_changes:
   - change editorial policy
@@ -42,9 +39,9 @@ forbidden_adapter_changes:
   - replace shared evaluation with adapter-only evaluation
 
 validation_policy:
-  evaluation_source: ../../core
+  evaluation_source: core
   release_gate: проверять portable prompt на общем наборе кейсов при значимых изменениях core, PROMPT.md или references
 
 notes:
-  - Каноническая редакторская логика живёт только в ../../core.
+  - Каноническая редакторская логика живёт только в core/.
   - PROMPT.md предназначен для ручной вставки в обычные чаты и должен оставаться самодостаточным без обязательных ссылок на локальные reference-файлы.

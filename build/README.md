@@ -1,16 +1,19 @@
-# Руководство по адаптерам
+# Руководство по сборке адаптеров
 
-Этот каталог описывает, как один редакторский стандарт из `core/` упаковывается в два deliverable-слоя:
+Этот каталог описывает служебный слой репозитория: как один редакторский стандарт из `core/` собирается в два готовых deliverable-пакета в `adapters/`.
+
+Готовые артефакты лежат в:
 
 - `adapters/skill/` для агентных сред и portable skills;
 - `adapters/prompt/` для ручного использования в обычных чатах.
 
-Связанные файлы:
+Служебные файлы сборки лежат в:
 
-- [`adapters/adapter-contract.md`](./adapter-contract.md)
-- [`adapters/sync-matrix.md`](./sync-matrix.md)
-- [`adapters/smoke-checklist.md`](./smoke-checklist.md)
-- [`adapters/_template/`](./_template/)
+- [`build/adapter-contract.md`](./adapter-contract.md)
+- [`build/sync-matrix.md`](./sync-matrix.md)
+- [`build/manifests/`](./manifests/)
+- [`build/template/`](./template/)
+- [`test/smoke-checklist.md`](../test/smoke-checklist.md)
 
 ## Источник правды
 
@@ -26,7 +29,7 @@
 
 Если любой адаптер расходится с `core/` в редакторской логике, ограничениях, workflow или целевом тоне, приоритет всегда у `core/`.
 
-## Какие адаптеры есть сейчас
+## Какие пакеты собираются сейчас
 
 ### `adapters/skill/`
 
@@ -42,8 +45,7 @@
 
 - `SKILL.md` как единый entrypoint;
 - `references/` как локальные runtime-справочники;
-- `install/` как platform-specific инструкции;
-- `targets/` как platform-specific metadata и конфигурация.
+- `agents/openai.yaml` как metadata для Codex/OpenAI.
 
 ### `adapters/prompt/`
 
@@ -58,15 +60,13 @@
 Внутри него:
 
 - `PROMPT.md` как единый entrypoint;
-- `references/` как локальные справочники для ручного подключения;
-- `usage/` как platform-specific инструкции по использованию.
+- `references/` как локальные справочники для ручного подключения.
 
 ## Что адаптеры могут менять
 
 Адаптеры могут менять только слой доставки:
 
 - metadata и front matter;
-- platform-specific install и usage-инструкции;
 - platform-specific config;
 - правила обращения к локальным `references/`;
 - файловую структуру, нужную конкретному способу доставки.
@@ -112,12 +112,12 @@
 1. `adapters/skill/SKILL.md`;
 2. `adapters/prompt/PROMPT.md`;
 3. локальные `references/`;
-4. install или usage-документацию;
+4. пользовательские инструкции в `README.md`;
 5. platform-specific config.
 
 Не начинайте с правки адаптера, если изменение по сути редакторское.
 
-Рабочий процесс синхронизации описан в [`adapters/sync-matrix.md`](./sync-matrix.md).
+Рабочий процесс синхронизации описан в [`build/sync-matrix.md`](./sync-matrix.md).
 Этот файл остаётся обзором архитектуры адаптеров и границ между `core/` и deliverable-слоями.
 
 ## Автосборка производных файлов
@@ -125,7 +125,7 @@
 Чтобы уменьшить риск drift между `core/` и deliverable-слоями, используйте вспомогательный скрипт:
 
 ```bash
-python scripts/build_adapters.py sync
+python build/build_adapters.py sync
 ```
 
 Он пересобирает:
@@ -137,7 +137,7 @@ python scripts/build_adapters.py sync
 Для быстрой проверки без записи используйте:
 
 ```bash
-python scripts/build_adapters.py check
+python build/build_adapters.py check
 ```
 
 Этот скрипт не заменяет review и eval, но закрывает механическую часть синхронизации, где чаще всего появляется случайный drift.
@@ -146,7 +146,7 @@ python scripts/build_adapters.py check
 
 1. Понять, затрагивает ли изменение редакторское поведение, паттерны, примеры или оценку.
 2. Если изменение редакторское, сначала обновить `core/`.
-3. Проверить `adapter.yaml` у `skill` и `prompt`.
+3. Проверить манифесты `build/manifests/skill.yaml` и `build/manifests/prompt.yaml`.
 4. Обновить только те deliverable-файлы, которые реально зависят от изменённого источника.
 5. Проверить, что `SKILL.md` и `PROMPT.md` по-прежнему не расходятся с `core/prompt-spec.md`.
 6. При значимом изменении поведения перепроверить результат на `core/eval-cases.md` и `core/eval-rubric.md`.
@@ -154,40 +154,36 @@ python scripts/build_adapters.py check
 ## Целевая структура
 
 ```text
-adapters/
+build/
 |-- README.md
 |-- adapter-contract.md
 |-- sync-matrix.md
-|-- _template/
-|   |-- README.md
-|   `-- adapter.yaml
+|-- build_adapters.py
+|-- manifests/
+|   |-- skill.yaml
+|   `-- prompt.yaml
+`-- template/
+    |-- README.md
+    `-- adapter.yaml
+
+adapters/
 |-- skill/
-|   |-- adapter.yaml
 |   |-- SKILL.md
-|   |-- install/
-|   |   |-- codex.md
-|   |   `-- claude-code.md
-|   |-- references/
-|   |   |-- patterns.md
-|   |   `-- examples.md
-|   `-- targets/
-|       `-- codex/
-|           `-- agents/
-|               `-- openai.yaml
+|   |-- agents/
+|   |   `-- openai.yaml
+|   `-- references/
+|       |-- patterns.md
+|       `-- examples.md
 `-- prompt/
-    |-- adapter.yaml
     |-- PROMPT.md
-    |-- references/
-    |   |-- patterns.md
-    |   `-- examples.md
-    `-- usage/
-        |-- chatgpt.md
-        `-- gemini.md
+    `-- references/
+        |-- patterns.md
+        `-- examples.md
 ```
 
-## Правило `adapter.yaml`
+## Правило манифеста
 
-В каждом активном адаптере должен лежать манифест `adapter.yaml`.
+У каждого активного адаптера должен быть манифест в `build/manifests/`.
 
 Он отвечает на простые вопросы:
 
@@ -218,10 +214,10 @@ adapters/
 
 - упаковку под skill или prompt;
 - platform-specific metadata;
-- install и usage-документацию;
+- пользовательскую инструкцию в `README.md`;
 - локальные правила загрузки reference-файлов;
 - platform-specific config.
 
 ## Текущее правило репозитория
 
-В этом репозитории `core/` определяет редакторский стандарт, а `adapters/` поставляет два производных артефакта доставки: `skill` и `prompt`.
+В этом репозитории `core/` определяет редакторский стандарт, `build/` обслуживает сборку, а `adapters/` поставляет два готовых артефакта доставки: `skill` и `prompt`.

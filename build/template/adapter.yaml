@@ -3,15 +3,15 @@ platform: "Delivery Type"
 status: planned
 
 source_of_truth:
-  prompt_spec: ../../core/prompt-spec.md
-  patterns: ../../core/patterns.md
-  examples: ../../core/examples.md
-  evaluation_cases: ../../core/eval-cases.md
-  evaluation_rubric: ../../core/eval-rubric.md
+  prompt_spec: core/prompt-spec.md
+  patterns: core/patterns.md
+  examples: core/examples.md
+  evaluation_cases: core/eval-cases.md
+  evaluation_rubric: core/eval-rubric.md
 
 deliverables:
   primary_instruction:
-    path: TBD
+    path: adapters/<adapter>/TBD
     role: основной entrypoint адаптера
   references: []
   platform_config: []
@@ -22,7 +22,6 @@ allowed_adapter_changes:
   - metadata
   - invocation wording
   - local reference loading rules
-  - install or usage docs
   - condensed or reorganized reference files
 
 forbidden_adapter_changes:
@@ -33,9 +32,9 @@ forbidden_adapter_changes:
   - replace core evaluation with adapter-only evaluation
 
 validation_policy:
-  evaluation_source: ../../core
+  evaluation_source: core
   release_gate: проверить поведение адаптера на общем наборе кейсов перед переводом в active
 
 notes:
   - Замените TBD на реальные файлы адаптера.
-  - Держите адаптер тонким. Если изменение редакторское, сначала обновляйте core.
+  - Держите адаптер тонким. Если изменение редакторское, сначала обновляйте core/.
