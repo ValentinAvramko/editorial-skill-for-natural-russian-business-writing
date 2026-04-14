@@ -44,9 +44,6 @@ description: Приводи русскоязычный деловой текст
 """
 
 SKILL_INTRO = """# Humanize Russian Business Text
-
-Этот файл является skill-упаковкой редакторского стандарта из `core/prompt-spec.md`.
-Он не должен переопределять `core`, а только доставляет тот же стандарт в формате skill для Codex и Claude Code.
 """
 
 SKILL_REFERENCES_SECTION = """## Локальные reference-файлы
