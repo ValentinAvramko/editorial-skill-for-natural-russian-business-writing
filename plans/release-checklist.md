@@ -7,7 +7,7 @@
 ## Перед выпуском
 
 - [ ] Убедиться, что `core/` содержит все канонические редакторские изменения.
-- [ ] Запустить `python build/build_adapters.py check` и убедиться, что `SKILL.md`, `PROMPT.md` и локальные `references/` не ушли в drift.
+- [ ] Запустить `python build/build_adapters.py check` и убедиться, что `SKILL.md`, prompt entrypoint-ы и локальные reference-файлы не ушли в drift.
 - [ ] Просмотреть `README.md` и `build/README.md` и убедиться, что они соответствуют текущей структуре репозитория.
 - [ ] Проверить `build/manifests/skill.yaml` и `build/manifests/prompt.yaml`.
 - [ ] Проверить `adapters/skill/agents/openai.yaml`, если менялись skill metadata или способы вызова в Codex.

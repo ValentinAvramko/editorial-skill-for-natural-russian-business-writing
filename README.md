@@ -43,7 +43,7 @@
 - кейсы и рубрика для сравнения версий;
 - лёгкий eval-runner для повторяемых прогонов;
 - единый portable skill для Codex и Claude Code;
-- единый portable prompt для ChatGPT, Gemini и похожих чатов.
+- prompt-пакет для ChatGPT, Gemini и похожих чатов: основной prompt-файл, тонкий instructions-слой и плоские reference-файлы.
 
 ## Для каких задач подходит
 
@@ -145,10 +145,10 @@ editorial-skill-for-natural-russian-business-writing/
     |       |-- patterns.md
     |       `-- examples.md
     `-- prompt/
-        |-- PROMPT.md
-        `-- references/
-            |-- patterns.md
-            `-- examples.md
+        |-- humanize-russian-business-text.prompt.md
+        |-- humanize-russian-business-text.instructions.md
+        |-- humanize-russian-business-text.patterns.md
+        `-- humanize-russian-business-text.examples.md
 ```
 
 Редакторская логика хранится в `core/`.
@@ -157,13 +157,15 @@ editorial-skill-for-natural-russian-business-writing/
 
 ## Как использовать
 
-Ниже описаны три сценария:
+Ниже описаны пять сценариев:
 
 1. установка общего `skill` в Codex;
 2. установка общего `skill` в Claude Code;
-3. ручное использование общего `prompt` в ChatGPT, Gemini и похожих чатах.
+3. быстрый одноразовый запуск в ChatGPT или Gemini;
+4. использование в ChatGPT Projects или GPTs;
+5. использование в Gemini Gems.
 
-Во всех трёх сценариях `core/` остаётся единственным каноническим источником редакторской логики.
+Во всех пяти сценариях `core/` остаётся единственным каноническим источником редакторской логики.
 
 ### Установка в Codex
 
@@ -296,12 +298,12 @@ cp -R ./adapters/skill/* ~/.claude/skills/humanize-russian-business-text/
 [ваш текст]
 ```
 
-### Ручное использование в ChatGPT или Gemini
+### Быстрый запуск в ChatGPT или Gemini
 
-Для обычных чатов используйте общий portable prompt из [`adapters/prompt/PROMPT.md`](./adapters/prompt/PROMPT.md).
+Для обычных чатов используйте самодостаточный quick-chat prompt из [`adapters/prompt/humanize-russian-business-text.prompt.md`](./adapters/prompt/humanize-russian-business-text.prompt.md).
 
-1. Откройте [`adapters/prompt/PROMPT.md`](./adapters/prompt/PROMPT.md).
-2. Скопируйте [`adapters/prompt/PROMPT.md`](./adapters/prompt/PROMPT.md) целиком в начало нового диалога.
+1. Откройте [`adapters/prompt/humanize-russian-business-text.prompt.md`](./adapters/prompt/humanize-russian-business-text.prompt.md).
+2. Скопируйте его целиком в начало нового диалога.
 3. Вставьте исходный текст.
 4. Дайте короткую задачу: что это за жанр, насколько глубоко можно править и нужен ли комментарий к правкам.
 
@@ -316,21 +318,47 @@ cp -R ./adapters/skill/* ~/.claude/skills/humanize-russian-business-text/
 ...
 ```
 
-`PROMPT.md` самодостаточен для обычного чата.
+`humanize-russian-business-text.prompt.md` самодостаточен для обычного чата.
 
-Если нужен более точный контроль, можно вручную добавить `references` как дополнительный контекст:
+Если нужен более точный контроль, можно дополнительно загрузить рядом:
 
-- [`adapters/prompt/references/patterns.md`](./adapters/prompt/references/patterns.md) для AI-штампов, канцелярита, карьерного шаблона и слишком гладкого тона;
-- [`adapters/prompt/references/examples.md`](./adapters/prompt/references/examples.md) для калибровки глубины правки.
-
-Обычный чат не откроет эти файлы по ссылке сам, поэтому их нужно вставлять в диалог вручную целиком или релевантным фрагментом после `PROMPT.md` и перед исходным текстом.
+- [`adapters/prompt/humanize-russian-business-text.patterns.md`](./adapters/prompt/humanize-russian-business-text.patterns.md) для AI-штампов, канцелярита, карьерного шаблона и слишком гладкого тона;
+- [`adapters/prompt/humanize-russian-business-text.examples.md`](./adapters/prompt/humanize-russian-business-text.examples.md) для калибровки глубины правки.
 
 Практически это обычно выглядит так:
 
-- для ChatGPT достаточно вставить `PROMPT.md`, короткую рамку задачи и текст;
+- для ChatGPT достаточно вставить `humanize-russian-business-text.prompt.md`, короткую рамку задачи и текст;
 - для Gemini полезно отдельно повторить ограничение «верни только итоговый текст», если модель начинает объяснять вместо редактирования.
 
-Если вы сравниваете версии промпта, модели или адаптера системно, используйте [`core/eval-cases.md`](./core/eval-cases.md) и [`core/eval-rubric.md`](./core/eval-rubric.md).
+### ChatGPT Projects или GPTs
+
+Для ChatGPT Projects или GPTs используйте prompt-пакет как разделённый слой:
+
+1. В instructions вставьте [`adapters/prompt/humanize-russian-business-text.instructions.md`](./adapters/prompt/humanize-russian-business-text.instructions.md).
+2. В knowledge / files обязательно загрузите [`adapters/prompt/humanize-russian-business-text.prompt.md`](./adapters/prompt/humanize-russian-business-text.prompt.md).
+3. Дополнительно загрузите:
+   - [`adapters/prompt/humanize-russian-business-text.patterns.md`](./adapters/prompt/humanize-russian-business-text.patterns.md)
+   - [`adapters/prompt/humanize-russian-business-text.examples.md`](./adapters/prompt/humanize-russian-business-text.examples.md)
+4. В рабочем чате давайте только задачу и исходный текст.
+
+В этой схеме `instructions.md` не дублирует редакторскую спецификацию, а требует использовать `humanize-russian-business-text.prompt.md` как обязательный основной файл.
+
+### Gemini Gems
+
+Для Gemini Gems используйте prompt-пакет как разделённый слой:
+
+1. В instructions Gem вставьте [`adapters/prompt/humanize-russian-business-text.instructions.md`](./adapters/prompt/humanize-russian-business-text.instructions.md).
+2. В knowledge обязательно загрузите [`adapters/prompt/humanize-russian-business-text.prompt.md`](./adapters/prompt/humanize-russian-business-text.prompt.md).
+3. Дополнительно загрузите:
+   - [`adapters/prompt/humanize-russian-business-text.patterns.md`](./adapters/prompt/humanize-russian-business-text.patterns.md)
+   - [`adapters/prompt/humanize-russian-business-text.examples.md`](./adapters/prompt/humanize-russian-business-text.examples.md)
+4. В самих чатах с Gem давайте только задачу и текст.
+
+Gemini иногда чаще уходит в объяснения вместо редактирования, поэтому в рабочих запросах полезно отдельно повторять ограничение: «верни только итоговый текст».
+
+### Системное сравнение
+
+Если вы системно сравниваете версии промпта, модели или адаптера внутри репозитория, используйте [`core/eval-cases.md`](./core/eval-cases.md) и [`core/eval-rubric.md`](./core/eval-rubric.md).
 
 ### Как понять, что результат хороший
 

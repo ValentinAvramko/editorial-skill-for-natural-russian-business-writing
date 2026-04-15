@@ -5,7 +5,7 @@
 Готовые артефакты лежат в:
 
 - `adapters/skill/` для агентных сред и portable skills;
-- `adapters/prompt/` для ручного использования в обычных чатах.
+- `adapters/prompt/` для обычных чатов, проектов и Gems.
 
 Служебные файлы сборки лежат в:
 
@@ -49,18 +49,16 @@
 
 ### `adapters/prompt/`
 
-Этот адаптер даёт один переносимый `PROMPT.md` для ручного использования в чатах.
+Этот адаптер даёт prompt-пакет для двух сценариев:
 
-Он предназначен для:
-
-- ChatGPT;
-- Gemini;
-- других обычных чатов без отдельного skill-формата.
+- quick chat в обычном диалоге;
+- file-backed использование в ChatGPT Projects, GPTs, Gemini Gems и похожих форматах.
 
 Внутри него:
 
-- `PROMPT.md` как единый entrypoint;
-- `references/` как локальные справочники для ручного подключения.
+- `humanize-russian-business-text.prompt.md` как самодостаточный quick-chat entrypoint;
+- `humanize-russian-business-text.instructions.md` как тонкий instructions-слой, который вызывает основной prompt-файл;
+- `humanize-russian-business-text.patterns.md` и `humanize-russian-business-text.examples.md` как плоский reference-слой.
 
 ## Что адаптеры могут менять
 
@@ -68,8 +66,9 @@
 
 - metadata и front matter;
 - platform-specific config;
-- правила обращения к локальным `references/`;
-- файловую структуру, нужную конкретному способу доставки.
+- правила обращения к локальным reference-файлам;
+- файловую структуру, нужную конкретному способу доставки;
+- разделение одного prompt-слоя на основной prompt и settings-инструкции, если редакторская политика при этом не меняется и не дублируется вторым entrypoint-ом.
 
 Это изменения упаковки, а не редакторской политики.
 
@@ -84,11 +83,11 @@
 - вводить новое допустимое поведение;
 - заменять общий слой оценки своим локальным.
 
-Важно: `SKILL.md` и `PROMPT.md` не являются независимыми авторскими документами. Оба файла считаются производными deliverable-артефактами от `core/prompt-spec.md`.
+Важно: `SKILL.md` и prompt deliverable-файлы не являются независимыми авторскими документами. Они считаются производными deliverable-артефактами от `core/prompt-spec.md`.
 
 ## Политика справочных файлов
 
-Локальные `references/` могут быть:
+Локальные reference-файлы могут быть:
 
 - прямыми копиями файлов из `core/`;
 - сжатыми версиями, если смысл не меняется;
@@ -110,10 +109,11 @@
 После этого проверьте, нужно ли синхронизировать:
 
 1. `adapters/skill/SKILL.md`;
-2. `adapters/prompt/PROMPT.md`;
-3. локальные `references/`;
-4. пользовательские инструкции в `README.md`;
-5. platform-specific config.
+2. `adapters/prompt/humanize-russian-business-text.prompt.md`;
+3. `adapters/prompt/humanize-russian-business-text.instructions.md`;
+4. prompt reference-файлы;
+5. пользовательские инструкции в `README.md`;
+6. platform-specific config.
 
 Не начинайте с правки адаптера, если изменение по сути редакторское.
 
@@ -131,8 +131,8 @@ python build/build_adapters.py sync
 Он пересобирает:
 
 - `adapters/skill/SKILL.md`;
-- `adapters/prompt/PROMPT.md`;
-- локальные `references/` у обоих адаптеров.
+- prompt entrypoint-ы в `adapters/prompt/`;
+- prompt reference-файлы.
 
 Для быстрой проверки без записи используйте:
 
@@ -148,7 +148,8 @@ python build/build_adapters.py check
 2. Если изменение редакторское, сначала обновить `core/`.
 3. Проверить манифесты `build/manifests/skill.yaml` и `build/manifests/prompt.yaml`.
 4. Обновить только те deliverable-файлы, которые реально зависят от изменённого источника.
-5. Проверить, что `SKILL.md` и `PROMPT.md` по-прежнему не расходятся с `core/prompt-spec.md`.
+5. Проверить, что `SKILL.md` и prompt deliverable-файлы по-прежнему не расходятся с `core/prompt-spec.md`.
+   Для `instructions.md` это означает не дублировать спецификацию, а корректно требовать основной prompt-файл.
 6. При значимом изменении поведения перепроверить результат на `core/eval-cases.md` и `core/eval-rubric.md`.
 
 ## Целевая структура
@@ -175,10 +176,10 @@ adapters/
 |       |-- patterns.md
 |       `-- examples.md
 `-- prompt/
-    |-- PROMPT.md
-    `-- references/
-        |-- patterns.md
-        `-- examples.md
+    |-- humanize-russian-business-text.prompt.md
+    |-- humanize-russian-business-text.instructions.md
+    |-- humanize-russian-business-text.patterns.md
+    `-- humanize-russian-business-text.examples.md
 ```
 
 ## Правило манифеста
@@ -216,6 +217,7 @@ adapters/
 - platform-specific metadata;
 - пользовательскую инструкцию в `README.md`;
 - локальные правила загрузки reference-файлов;
+- разделение quick-chat и settings-инструкций;
 - platform-specific config.
 
 ## Текущее правило репозитория

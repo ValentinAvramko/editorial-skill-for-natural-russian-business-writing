@@ -1,5 +1,5 @@
 adapter_id: prompt
-platform: "Portable Chat Prompt (ChatGPT, Gemini, etc.)"
+platform: "Portable Chat Prompt + Project Instructions (ChatGPT, Gemini, etc.)"
 status: active
 
 source_of_truth:
@@ -11,19 +11,22 @@ source_of_truth:
 
 deliverables:
   primary_instruction:
-    path: adapters/prompt/PROMPT.md
-    role: единый переносимый prompt-entrypoint для ручного использования в чатах
+    path: adapters/prompt/humanize-russian-business-text.prompt.md
+    role: самодостаточный prompt-entrypoint для обычных одноразовых чатов
+  project_instruction:
+    path: adapters/prompt/humanize-russian-business-text.instructions.md
+    role: тонкий instructions-слой, который требует использовать основной prompt-файл в ChatGPT Projects, GPTs, Gemini Gems и похожих форматах
   references:
-    - path: adapters/prompt/references/patterns.md
+    - path: adapters/prompt/humanize-russian-business-text.patterns.md
       source: core/patterns.md
-      role: локальный справочник паттернов для калибровки и сопровождения внутри репозитория; не требуется для обычного чата
-    - path: adapters/prompt/references/examples.md
+      role: reference-файл паттернов для чатов, проектов и Gems; усиливает калибровку, но не меняет стандарт
+    - path: adapters/prompt/humanize-russian-business-text.examples.md
       source: core/examples.md
-      role: локальный справочник примеров для калибровки глубины правки внутри репозитория; не требуется для обычного чата
+      role: reference-файл примеров для калибровки глубины правки в file-backed сценариях
   platform_config: []
   supporting_docs:
     - path: README.md
-      role: пользовательская инструкция по ручному использованию prompt в ChatGPT, Gemini и похожих чатах
+      role: пользовательская инструкция по quick chat, ChatGPT Projects и Gemini Gems
 
 allowed_adapter_changes:
   - packaging
@@ -40,8 +43,9 @@ forbidden_adapter_changes:
 
 validation_policy:
   evaluation_source: core
-  release_gate: проверять portable prompt на общем наборе кейсов при значимых изменениях core, PROMPT.md или references
+  release_gate: проверять основной prompt-файл, instructions-слой и reference-файлы на общем наборе кейсов при значимых изменениях core или prompt-слоя
 
 notes:
   - Каноническая редакторская логика живёт только в core/.
-  - PROMPT.md предназначен для ручной вставки в обычные чаты и должен оставаться самодостаточным без обязательных ссылок на локальные reference-файлы.
+  - `humanize-russian-business-text.prompt.md` предназначен для ручной вставки в обычные чаты и должен оставаться самодостаточным без обязательных ссылок на reference-файлы.
+  - `humanize-russian-business-text.instructions.md` не должен дублировать prompt-спецификацию и должен требовать обязательного использования `humanize-russian-business-text.prompt.md`.
