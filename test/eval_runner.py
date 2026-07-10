@@ -24,7 +24,13 @@ CRITERIA = [
     ("patterns_removed", "Удаление паттернов"),
     ("no_overediting", "Нет переисправления"),
     ("no_tone_drift", "Нет ухода тона"),
+    ("semantic_composition", "Смысловой отбор и композиция"),
+    ("content_driven_rhythm", "Содержательно обусловленный ритм"),
 ]
+
+MAX_CASE_SCORE = len(CRITERIA) * 2
+READY_MIN_SCORE = MAX_CASE_SCORE - 1
+NEEDS_WORK_MIN_SCORE = (MAX_CASE_SCORE * 2 + 2) // 3
 
 DECISION_READY = "Готово"
 DECISION_NEEDS_WORK = "Нужна доработка"
@@ -131,6 +137,7 @@ def make_template_case(case: EvalCase) -> dict[str, Any]:
         "expected_behavior": case.expected_behavior,
         "candidate_output": "",
         "scores": {key: None for key, _ in CRITERIA},
+        "external_signals": [],
         "notes": "",
     }
 
@@ -196,6 +203,11 @@ def build_case_reports(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
         total = sum(scores.values())
         decision = decide_case(scores, total)
+        external_signals = case.get("external_signals", [])
+        if not isinstance(external_signals, list):
+            raise ValueError(
+                f"Кейс {case_id}: поле 'external_signals' должно быть списком"
+            )
         reports.append(
             {
                 "case_id": case_id,
@@ -203,6 +215,7 @@ def build_case_reports(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "scores": scores,
                 "total": total,
                 "decision": decision,
+                "external_signals": external_signals,
                 "notes": case.get("notes", ""),
             }
         )
@@ -212,9 +225,9 @@ def build_case_reports(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
 def decide_case(scores: dict[str, int], total: int) -> str:
     if scores["meaning_preserved"] == 0 or scores["no_invented_details"] == 0:
         return DECISION_FAIL
-    if 11 <= total <= 12 and 0 not in scores.values():
+    if READY_MIN_SCORE <= total <= MAX_CASE_SCORE and 0 not in scores.values():
         return DECISION_READY
-    if 8 <= total <= 10:
+    if NEEDS_WORK_MIN_SCORE <= total < READY_MIN_SCORE:
         return DECISION_NEEDS_WORK
     return DECISION_FAIL
 
@@ -267,7 +280,7 @@ def render_report(
 
     for report in reports:
         lines.append(
-            f"| {report['case_id']}. {report['title']} | {report['total']}/12 | {report['decision']} |"
+            f"| {report['case_id']}. {report['title']} | {report['total']}/{MAX_CASE_SCORE} | {report['decision']} |"
         )
 
     notes_with_content = [report for report in reports if str(report["notes"]).strip()]
@@ -278,7 +291,46 @@ def render_report(
                 f"- Кейс {report['case_id']}. {report['title']}: {str(report['notes']).strip()}"
             )
 
+    reports_with_signals = [
+        report for report in reports if report["external_signals"]
+    ]
+    if reports_with_signals:
+        lines.extend(
+            [
+                "",
+                "## Внешние сигналы",
+                "",
+                "Эти результаты зафиксированы для диагностики и не влияют на решение по прогону.",
+                "",
+                "| Кейс | Сервис | Дата | Результат | Заметка |",
+                "| --- | --- | --- | --- | --- |",
+            ]
+        )
+        for report in reports_with_signals:
+            for signal in report["external_signals"]:
+                if not isinstance(signal, dict):
+                    raise ValueError(
+                        f"Кейс {report['case_id']}: каждый внешний сигнал должен быть объектом"
+                    )
+                lines.append(
+                    "| "
+                    + " | ".join(
+                        [
+                            markdown_cell(report["case_id"]),
+                            markdown_cell(signal.get("service", "")),
+                            markdown_cell(signal.get("checked_at", "")),
+                            markdown_cell(signal.get("result", "")),
+                            markdown_cell(signal.get("notes", "")),
+                        ]
+                    )
+                    + " |"
+                )
+
     return "\n".join(lines) + "\n"
+
+
+def markdown_cell(value: Any) -> str:
+    return str(value).strip().replace("|", "\\|").replace("\n", " ")
 
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
